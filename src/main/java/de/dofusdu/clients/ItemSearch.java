@@ -1,0 +1,63 @@
+/*
+ * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package de.dofusdu.clients;
+
+import de.dofusdu.dto.encyclopedia.*;
+import de.dofusdu.dto.SearchResult;
+import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
+
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.core.MediaType;
+
+@Path("/")
+@Produces(MediaType.APPLICATION_JSON)
+@RegisterRestClient(configKey="itemsearch")
+public interface ItemSearch {
+
+    @GET
+    @Path("/dofus/{language}/search/{search_string}")
+    SearchResult searchItem(@PathParam("language") String language,
+                            @PathParam("search_string") String searchString);
+
+    @GET
+    @Path("/dofus/{language}/resources/{ankama_id}")
+    ResourceDTO getResource(@PathParam("language") String language,
+                            @PathParam("ankama_id") Long ankamaId);
+
+    @GET
+    @Path("/dofus/{language}/consumables/{ankama_id}")
+    ConsumableDTO getConsumable(@PathParam("language") String language,
+                                @PathParam("ankama_id") Long ankamaId);
+
+    @GET
+    @Path("/dofus/{language}/equipment/{ankama_id}")
+    EquipmentDTO getEquipment(@PathParam("language") String language,
+                              @PathParam("ankama_id") Long ankamaId);
+
+    @GET
+    @Path("/dofus/{language}/weapons/{ankama_id}")
+    WeaponDTO getWeapon(@PathParam("language") String language,
+                        @PathParam("ankama_id") Long ankamaId);
+
+    @GET
+    @Path("/dofus/{language}/pets/{ankama_id}")
+    PetDTO getPet(@PathParam("language") String language,
+                  @PathParam("ankama_id") Long ankamaId);
+}
