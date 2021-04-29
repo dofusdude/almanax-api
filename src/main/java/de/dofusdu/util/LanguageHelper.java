@@ -38,7 +38,7 @@ public class LanguageHelper {
 
     public static Collection<LanguageMapDTO> allLanguagesDto() {
         return List.of(new LanguageMapDTO("english", "en"),
-                new LanguageMapDTO("french", "de"),
+                new LanguageMapDTO("french", "fr"),
                 new LanguageMapDTO("italian", "it"),
                 new LanguageMapDTO("spanish", "es"),
                 new LanguageMapDTO("german", "de"));
