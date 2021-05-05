@@ -16,8 +16,6 @@
 
 package de.dofusdu.dto.encyclopedia;
 
-import de.dofusdu.entity.Item;
-
 import javax.json.bind.annotation.JsonbProperty;
 
 public class EncItemDTO {
@@ -27,6 +25,8 @@ public class EncItemDTO {
     public String description;
     @JsonbProperty("image_url")
     public String imageUrl;
+    @JsonbProperty("image_url_local")
+    public String imageUrlLocal;
     @JsonbProperty("ankama_url")
     public String ankamaUrl;
 
