@@ -1,6 +1,15 @@
-# Almanax API
+# :calendar: Almanax API
 
-A multilingual API for the Krosmoz Dofus Almanax.
+A multilingual API for the Krosmoz Dofus Almanax with a few extras.
+
+The main features are
+- get by date :date:
+- combining all info about the needed offering item :bookmark: (with higher res images)
+- getting date spans up to a month 
+- filter a date span by bonus
+- getting the next date for a specific bonus
+- all time relative APIs support timezones :clock1: (default Europe/Paris)
+- everything above (including language agnostic links) in english :uk:, french :fr:, italian :it:, spanish :es: and german :de:
 
 Depends on the [Dofus API](https://github.com/dofusdude/dofus-api) for the items.
 
@@ -18,6 +27,9 @@ If that does not work (maybe because you are on Windows), download Maven for you
 project directory.
 
 Note: The API is build on Quarkus. https://quarkus.io for more.
+
+## Awesome projects using the API
+- [AlmanaxApp](https://almanaxapp.netlify.app) by Lystina
 
 ## License
 Author: Christopher Sieh <stelzo@steado.de>

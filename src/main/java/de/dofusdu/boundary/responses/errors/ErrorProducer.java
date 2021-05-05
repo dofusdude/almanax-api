@@ -73,4 +73,8 @@ public class ErrorProducer {
     public DateFormatResponse dateFormat() {
         return new DateFormatResponse(base);
     }
+
+    public TimezoneResponse timezone() {
+        return new TimezoneResponse(base);
+    }
 }

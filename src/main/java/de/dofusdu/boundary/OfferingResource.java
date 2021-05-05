@@ -52,6 +52,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.time.format.DateTimeParseException;
 import java.util.*;
 
@@ -70,6 +71,9 @@ public class OfferingResource {
 
     @ConfigProperty(name = "admin.api.secret")
     String apiKey;
+
+    @ConfigProperty(name = "timezone")
+    String configTimezone;
 
     @Inject
     public OfferingResource(OfferingRepository offeringRepository,
@@ -313,7 +317,8 @@ public class OfferingResource {
     @Operation(summary = "All offerings for given count of future days from now.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ...")
+            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -334,8 +339,9 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class
-                                    } )
+                                            de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
+                                    })
                             )
                     }
             )
@@ -347,15 +353,17 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadRawRelaisTiming")
     public Response daysAheadRaw(@PathParam("days_ahead") Integer daysAhead,
-                                    @PathParam("language") String language) {
-        return daysAheadRawV1(daysAhead, language);
+                                 @PathParam("language") String language,
+                                 @QueryParam("timezone") String timezone) {
+        return daysAheadRawV1(daysAhead, language, timezone);
     }
 
     @Tag(name = "Version 1.0 stable")
     @Operation(summary = "All offerings for given count of future days from now.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ...")
+            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @GET
     @APIResponses({
@@ -377,7 +385,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class
+                                            de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     } )
                             )
                     }
@@ -390,7 +399,8 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadRawV1Timing")
     public Response daysAheadRawV1(@PathParam("days_ahead") Integer daysAhead,
-                                           @PathParam("language") String language) {
+                                   @PathParam("language") String language,
+                                   @QueryParam("timezone") String timezone) {
         // Prepare responses.
         ApiResponse response = new ApiResponse(version, language);
         OfferingResponse res = new OfferingResponse(response);
@@ -404,7 +414,18 @@ public class OfferingResource {
         }
 
         // Get data.
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate;
+        if (timezone == null || timezone.isEmpty()) {
+            startDate = LocalDate.now(ZoneId.of(configTimezone));
+        } else {
+            try {
+                startDate = LocalDate.now(ZoneId.of(timezone));
+            } catch (Exception e) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(errorProducer.timezone())
+                        .build();
+            }
+        }
         LocalDate endDate = startDate.plusDays(daysAhead);
 
         List<OfferingDTO> offerings = offeringRepository.listFromDateRangeDTO(startDate, endDate, language);
@@ -425,7 +446,8 @@ public class OfferingResource {
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
             @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
-            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability.")
+            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -446,7 +468,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.BonusTypeNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class
+                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     } )
                             )
                     }
@@ -459,9 +482,10 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadBonusFilterRelaisTiming")
     public Response daysAheadBonusFilter(@PathParam("days_ahead") Integer daysAhead,
-                                            @PathParam("language") String language,
-                                            @PathParam("bonus_type") String bonusType) {
-        return daysAheadBonusFilterV1(daysAhead, language, bonusType);
+                                         @PathParam("language") String language,
+                                         @PathParam("bonus_type") String bonusType,
+                                         @QueryParam("timezone") String timezone) {
+        return daysAheadBonusFilterV1(daysAhead, language, bonusType, timezone);
     }
 
     @Tag(name = "Version 1.0 stable")
@@ -469,7 +493,8 @@ public class OfferingResource {
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
             @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
-            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability.")
+            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -490,7 +515,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.BonusTypeNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class
+                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     } )
                             )
                     }
@@ -503,15 +529,27 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadBonusFilterV1Timing")
     public Response daysAheadBonusFilterV1(@PathParam("days_ahead") Integer daysAhead,
-                                                   @PathParam("language") String language,
-                                                   @PathParam("bonus_type") String bonusType) {
+                                           @PathParam("language") String language,
+                                           @PathParam("bonus_type") String bonusType,
+                                           @QueryParam("timezone") String timezone) {
         // Prepare responses.
         ApiResponse response = new ApiResponse(version, language);
         OfferingResponse res = new OfferingResponse(response);
         errorProducer.setBase(response);
 
         // Get data.
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate;
+        if (timezone == null || timezone.isEmpty()) {
+            startDate = LocalDate.now(ZoneId.of(configTimezone));
+        } else {
+            try {
+                startDate = LocalDate.now(ZoneId.of(timezone));
+            } catch (Exception e) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(errorProducer.timezone())
+                        .build();
+            }
+        }
         LocalDate endDate = startDate.plusDays(daysAhead);
 
         // check existing language
@@ -545,7 +583,8 @@ public class OfferingResource {
     @Operation(summary = "Get only the needed items.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ...")
+            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -566,7 +605,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class
+                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     } )
                             )
                     }
@@ -579,8 +619,9 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadItemsRelaisTiming")
     public Response daysAheadItems(@PathParam("days_ahead") Integer daysAhead,
-                                      @PathParam("language") String language) {
-        return daysAheadItemsV1(daysAhead, language);
+                                   @PathParam("language") String language,
+                                   @QueryParam("timezone") String timezone) {
+        return daysAheadItemsV1(daysAhead, language, timezone);
     }
 
 
@@ -588,7 +629,8 @@ public class OfferingResource {
     @Operation(summary = "Get only the needed items.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ...")
+            @Parameter(name = "days_ahead", in = ParameterIn.PATH, example = "1", description = "Number of days ahead. 0 = today, 1 = tomorrow ..."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -609,7 +651,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {
                                             de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class
+                                            de.dofusdu.boundary.responses.errors.DateNotFoundResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     } )
                             )
                     }
@@ -622,14 +665,26 @@ public class OfferingResource {
     @CircuitBreaker
     @Timed(name = "daysAheadItemsV1Timing")
     public Response daysAheadItemsV1(@PathParam("days_ahead") Integer daysAhead,
-                                        @PathParam("language") String language) {
+                                     @PathParam("language") String language,
+                                     @QueryParam("timezone") String timezone) {
         // Prepare responses.
         ApiResponse response = new ApiResponse(version, language);
         ItemsResponse res = new ItemsResponse(response);
         errorProducer.setBase(response);
 
         // Get data.
-        LocalDate startDate = LocalDate.now();
+        LocalDate startDate;
+        if (timezone == null || timezone.isEmpty()) {
+            startDate = LocalDate.now(ZoneId.of(configTimezone));
+        } else {
+            try {
+                startDate = LocalDate.now(ZoneId.of(timezone));
+            } catch (Exception e) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(errorProducer.timezone())
+                        .build();
+            }
+        }
         LocalDate endDate = startDate.plusDays(daysAhead);
 
         // check existing language
@@ -674,7 +729,8 @@ public class OfferingResource {
     @Tag(name = "Next Bonus", description = "Find the next offering from now with a specific bonus.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability.")
+            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -695,7 +751,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
                                             de.dofusdu.boundary.responses.errors.BonusTypeNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.NoOfferingWithBonusResponse.class
+                                            de.dofusdu.boundary.responses.errors.NoOfferingWithBonusResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     })
                             )
                     }
@@ -706,15 +763,17 @@ public class OfferingResource {
     @Counted(name = "nextBonusTypeRelaisCount", description = "Next day with specific bonus without versioning.")
     public Response nextBonusType(@PathParam("bonus_type") String bonusType,
                                   @PathParam("language") String language,
-                                  @Context UriInfo uriInfo) {
-        return nextBonusTypeV1(bonusType, language, uriInfo);
+                                  @Context UriInfo uriInfo,
+                                  @QueryParam("timezone") String timezone) {
+        return nextBonusTypeV1(bonusType, language, uriInfo, timezone);
     }
 
     @Tag(name = "Version 1.0 stable")
     @Operation(summary = "Find the next offering from now with a specific bonus.")
     @Parameters({
             @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2."),
-            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability.")
+            @Parameter(name = "bonus_type", in = ParameterIn.PATH, example = "full-of-life", description = "Bonustype to filter. always english in lowercase and '-' instead of ' ' for readability."),
+            @Parameter(name = "timezone", in = ParameterIn.QUERY, description = "Default is Europe/Paris. Insert something random to see all available.")
     })
     @APIResponses({
             @APIResponse(
@@ -735,7 +794,8 @@ public class OfferingResource {
                                     mediaType = MediaType.APPLICATION_JSON,
                                     schema = @Schema(oneOf = {de.dofusdu.boundary.responses.errors.LanguageNotFoundResponse.class,
                                             de.dofusdu.boundary.responses.errors.BonusTypeNotFoundResponse.class,
-                                            de.dofusdu.boundary.responses.errors.NoOfferingWithBonusResponse.class
+                                            de.dofusdu.boundary.responses.errors.NoOfferingWithBonusResponse.class,
+                                            de.dofusdu.boundary.responses.errors.TimezoneResponse.class
                                     })
                             )
                     }
@@ -749,7 +809,8 @@ public class OfferingResource {
     @Timed(name = "nextBonusTypeV1Timing")
     public Response nextBonusTypeV1(@PathParam("bonus_type") String bonusType,
                                     @PathParam("language") String language,
-                                    @Context UriInfo uriInfo) {
+                                    @Context UriInfo uriInfo,
+                                    @QueryParam("timezone") String timezone) {
         // Prepare responses.
         ApiResponse response = new ApiResponse(version, language);
         SingleOfferingResponse res = new SingleOfferingResponse(response);
@@ -763,9 +824,22 @@ public class OfferingResource {
         }
 
         // Get data.
+        LocalDate startDate;
+        if (timezone == null || timezone.isEmpty()) {
+            startDate = LocalDate.now(ZoneId.of(configTimezone));
+        } else {
+            try {
+                startDate = LocalDate.now(ZoneId.of(timezone));
+            } catch (Exception e) {
+                return Response.status(Response.Status.BAD_REQUEST)
+                        .entity(errorProducer.timezone())
+                        .build();
+            }
+        }
+
         Optional<OfferingDTO> offering;
         try {
-            offering = offeringRepository.nextOfferingWithBonusDTO(LocalDate.now(), bonusType, language);
+            offering = offeringRepository.nextOfferingWithBonusDTO(startDate, bonusType, language);
             if (offering.isEmpty()) {
                 return Response.status(Response.Status.NOT_FOUND)
                         .entity(errorProducer.noOfferingWithBonus())
