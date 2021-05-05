@@ -14,22 +14,14 @@
  * limitations under the License.
  */
 
-package de.dofusdu.dto.encyclopedia;
+package de.dofusdu.boundary.responses.errors;
 
-import javax.json.bind.annotation.JsonbProperty;
+import de.dofusdu.boundary.responses.ApiResponse;
 
-public class EncItemDTO {
-    @JsonbProperty("ankama_id")
-    public Long ankamaId;
-    public String name;
-    public String description;
-    @JsonbProperty("image_url")
-    public String imageUrl;
-    @JsonbProperty("image_url_local")
-    public String imageUrlLocal;
-    @JsonbProperty("ankama_url")
-    public String ankamaUrl;
-
-    public EncItemDTO() {
+public class TimezoneResponse extends ApiResponse {
+    public TimezoneError error;
+    public TimezoneResponse(ApiResponse o) {
+        super(o);
+        error = new TimezoneError();
     }
 }
