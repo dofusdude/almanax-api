@@ -1,4 +1,5 @@
 # :calendar: Almanax API
+[![Build](https://github.com/dofusdude/almanax-api/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/dofusdude/almanax-api/actions/workflows/maven.yml)
 
 A multilingual API for the Krosmoz Dofus Almanax with a few extras.
 
