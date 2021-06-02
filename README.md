@@ -31,6 +31,7 @@ Note: The API is build on Quarkus. https://quarkus.io for more.
 
 ## Awesome projects using the API
 - [AlmanaxApp](https://almanaxapp.netlify.app) by Lystina
+- [KaellyBot](https://github.com/Kaysoro/KaellyBot) by Kaysoro
 
 ## License
 Author: Christopher Sieh <stelzo@steado.de>
