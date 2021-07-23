@@ -101,7 +101,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/languages")
+    @Path("languages")
     public LanguagesResponse languages() {
         ApiResponse response = new ApiResponse(version, "en");
         errorProducer.setBase(response);
@@ -127,7 +127,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/bonuses")
+    @Path("bonuses")
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Response bonusTypesDefault() {
         return bonusTypes("en");
@@ -161,7 +161,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/bonuses/{language}")
+    @Path("bonuses/{language}")
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Response bonusTypes(@PathParam("language") String language) {
         ApiResponse response = new ApiResponse(version, language);
@@ -219,7 +219,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/{language}/{date}")
+    @Path("{language}/{date}")
     @Counted(name = "singleDayRelaisCount", description = "Single Day hits (date) without versioning.")
     @Retry
     @CircuitBreaker
@@ -268,7 +268,7 @@ public class OfferingResource {
     ),
     })
     @GET
-    @Path("/v1/{language}/{date}")
+    @Path("v1/{language}/{date}")
     @Counted(name = "singleDayV1Count", description = "Single Day hits (date) with versioning.")
     @Retry
     @CircuitBreaker
@@ -347,7 +347,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/{language}/ahead/{days_ahead}")
+    @Path("{language}/ahead/{days_ahead}")
     @Counted(name = "daysAheadRawRelaisCount", description = "Days ahead hits without versioning.")
     @Retry
     @CircuitBreaker
@@ -392,7 +392,7 @@ public class OfferingResource {
                     }
             )
     })
-    @Path("/v1/{language}/ahead/{days_ahead}")
+    @Path("v1/{language}/ahead/{days_ahead}")
     @Transactional
     @Counted(name = "daysAheadRawV1Count", description = "Days ahead hits with versioning.")
     @Retry
@@ -476,7 +476,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/{language}/ahead/{days_ahead}/bonus/{bonus_type}")
+    @Path("{language}/ahead/{days_ahead}/bonus/{bonus_type}")
     @Counted(name = "daysAheadBonusFilterRelaisCount", description = "Days ahead with bonus filter, without versioning.")
     @Retry
     @CircuitBreaker
@@ -523,7 +523,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/v1/{language}/ahead/{days_ahead}/bonus/{bonus_type}")
+    @Path("v1/{language}/ahead/{days_ahead}/bonus/{bonus_type}")
     @Counted(name = "daysAheadBonusFilterV1Count", description = "Days ahead with bonus filter, with versioning.")
     @Retry
     @CircuitBreaker
@@ -613,7 +613,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/{language}/ahead/{days_ahead}/items")
+    @Path("{language}/ahead/{days_ahead}/items")
     @Counted(name = "daysAheadItemsRelaisCount", description = "Days ahead with items and without versioning.")
     @Retry
     @CircuitBreaker
@@ -659,7 +659,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/v1/{language}/ahead/{days_ahead}/items")
+    @Path("v1/{language}/ahead/{days_ahead}/items")
     @Counted(name = "daysAheadItemsV1Count", description = "Days ahead with items and with versioning.")
     @Retry
     @CircuitBreaker
@@ -759,7 +759,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/{language}/bonus/{bonus_type}/next")
+    @Path("{language}/bonus/{bonus_type}/next")
     @Counted(name = "nextBonusTypeRelaisCount", description = "Next day with specific bonus without versioning.")
     public Response nextBonusType(@PathParam("bonus_type") String bonusType,
                                   @PathParam("language") String language,
@@ -802,7 +802,7 @@ public class OfferingResource {
             )
     })
     @GET
-    @Path("/v1/{language}/bonus/{bonus_type}/next")
+    @Path("v1/{language}/bonus/{bonus_type}/next")
     @Counted(name = "nextBonusTypeV1Count", description = "Next day with specific bonus with versioning.")
     @Retry
     @CircuitBreaker
