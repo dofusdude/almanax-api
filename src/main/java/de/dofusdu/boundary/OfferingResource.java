@@ -273,7 +273,7 @@ public class OfferingResource {
     @Retry
     @CircuitBreaker
     @Timed(name = "singleDayV1Timing")
-    @CacheResult(cacheName = "singleDayV1")
+    //@CacheResult(cacheName = "singleDayV1")
     public Response singleDayV1(@PathParam("language") String language,
                                 @PathParam("date") String stringDate) {
         // Prepare responses.

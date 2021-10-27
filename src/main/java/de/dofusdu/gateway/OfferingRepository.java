@@ -170,10 +170,9 @@ public class OfferingRepository {
     }
 
     @Transactional
-    @CacheResult(cacheName = "singleDate")
+    //@CacheResult(cacheName = "singleDate")
     public Optional<OfferingDTO> singleDTOFromDate(LocalDate date, String language) {
 
-        // cache miss
         Optional<Offering> offering = singleFromDate(date);
         if (offering.isEmpty()) {
             return Optional.empty();
@@ -182,7 +181,7 @@ public class OfferingRepository {
         if (res == null) {
             return Optional.empty();
         }
-        // populate cache when found
+
         return Optional.of(res);
     }
 
@@ -224,7 +223,7 @@ public class OfferingRepository {
 
 
     @Transactional
-    @CacheResult(cacheName = "bonusOfferings")
+    //@CacheResult(cacheName = "bonusOfferings")
     public Optional<OfferingDTO> nextOfferingWithBonusDTO(LocalDate startDate, String bonusUrlAlias, String language) {
         Optional<Offering> offeringDTO = nextOfferingWithBonus(startDate, bonusUrlAlias);
         if (offeringDTO.isEmpty()) {
@@ -284,7 +283,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    @CacheResult(cacheName = "dateRangeList")
+    //@CacheResult(cacheName = "dateRangeList")
     public List<OfferingDTO> listFromDateRangeDTO(LocalDate startDate, LocalDate endDate, String language) {
         return listFromDateRange(startDate, endDate).stream().map(offering -> OfferingDTO.from(offering, language, encObjectSwitch.get(offering.getItem().getUrl(), language))).collect(Collectors.toList());
     }
