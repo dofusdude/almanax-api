@@ -43,7 +43,7 @@ public class BonusType extends MultilingualEntity {
     }
 
     public static String generateUrlAlias(String name) {
-        return name.toLowerCase().replace(' ', '-');
+        return name.toLowerCase().replace(' ', '-').strip();
     }
 
     public BonusType() {

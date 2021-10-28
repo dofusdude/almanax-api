@@ -77,7 +77,7 @@ public class BonusTypeRepository {
 
         query.setLockMode(LockModeType.PESSIMISTIC_READ);
 
-        List<String> names = new ArrayList<>();
+        List<String> names;
         String res;
         try {
             names = query.getResultList();
@@ -185,10 +185,10 @@ public class BonusTypeRepository {
 
     @Transactional
     public BonusType persistIfNotExistent(BonusType bonusType, String language) {
-        Optional<BonusType> byName = findByName(bonusType.getName(language), language);
+        Optional<BonusType> byAlias = findByAlias(bonusType.getUrlAlias());
 
-        if (byName.isPresent()) {
-            return byName.get();
+        if (byAlias.isPresent()) {
+            return byAlias.get();
         }
 
         try {
@@ -198,7 +198,7 @@ public class BonusTypeRepository {
             if (closestEntity.isEmpty()) {
                 throw new NotFoundException();
             }
-            byName = findByName(closestEntity.get(), language);
+            Optional<BonusType> byName = findByName(closestEntity.get(), language);
             if (byName.isEmpty()) {
                 throw new NotFoundException();
             }
