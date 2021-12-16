@@ -29,7 +29,7 @@ import de.dofusdu.exceptions.BonusTypeForDayNotFoundException;
 import de.dofusdu.exceptions.BonusTypeNotFoundException;
 import de.dofusdu.exceptions.FirstDayNotEnglishException;
 import de.dofusdu.util.DateConverter;
-import io.quarkus.cache.CacheResult;
+import de.dofusdu.util.LanguageHelper;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.RequestScoped;
@@ -42,6 +42,7 @@ import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    public void update(CreateOfferingDTO offeringDTO) {
+    public void updateTranslation(CreateOfferingDTO offeringDTO) {
         Optional<Offering> alreadyInsertedOffering = singleFromDate(offeringDTO.getDate());
 
         if (alreadyInsertedOffering.isEmpty()) {
@@ -114,13 +115,57 @@ public class OfferingRepository {
 
     }
 
+    @Transactional(value = Transactional.TxType.SUPPORTS)
+    private boolean offeringChanged(CreateOfferingDTO newOffering, Offering persistentOffering) {
+        String lang = LanguageHelper.getString(LanguageHelper.Language.ENGLISH);
+        if (!newOffering.item.equals(persistentOffering.getItem().getName(lang))) {
+            return true; // item
+        }
+
+        if (!newOffering.bonus.equals(persistentOffering.getBonus().getName(lang))) {
+            return true; // bonus
+        }
+
+        if (!newOffering.bonusType.equals(persistentOffering.getBonus().getType().getName(lang))) {
+            return true; // bonustype
+        }
+
+        if (!newOffering.itemQuantity.equals(persistentOffering.getItemQuantity())) {
+            return true; // itemQuantity
+        }
+
+        return false;
+    }
+
+    @Transactional
+    public boolean update(CreateOfferingDTO offeringDTO) {
+        if (!offeringDTO.language.equals(LanguageHelper.getString(LanguageHelper.Language.ENGLISH))) {
+            return false;
+        }
+
+        Optional<Offering> alreadyInsertedOffering = singleFromDate(offeringDTO.getDate());
+        if (alreadyInsertedOffering.isEmpty()) {
+            throw new FirstDayNotEnglishException();
+        }
+        Offering existingOffering = alreadyInsertedOffering.get();
+
+        boolean changed = this.offeringChanged(offeringDTO, existingOffering);
+        if (!changed) {
+            return false; // nothing changed so nothing to do here
+        }
+
+        // delete the old entries and create new
+        this.persist(offeringDTO, LanguageHelper.getString(LanguageHelper.Language.ENGLISH), true);
+        return true; // parser must now insert the translations
+    }
+
     /**
      * Only persist if the offering is not the same as last year. If there is nothing from last year, persist it.
      *
      * @param offeringDTO
      */
     @Transactional
-    public void persist(CreateOfferingDTO offeringDTO, String language) {
+    public void persist(CreateOfferingDTO offeringDTO, String language, boolean recreate) {
         SearchResult searchResult;
         try {
             searchResult = itemSearch.searchItem(offeringDTO.language, offeringDTO.item);
@@ -134,9 +179,17 @@ public class OfferingRepository {
 
         Offering wantsToBeOffering = offeringDTO.toOffering(language, searchResult.url);
         Optional<Offering> alreadyInsertedOffering = singleFromDate(offeringDTO.getDate());
+        if (!recreate) {
+            if (alreadyInsertedOffering.isPresent()) {
+                throw new FirstDayNotEnglishException();
+            }
+        } else {
+            if (alreadyInsertedOffering.isEmpty()) {
+                throw new NotFoundException();
+            }
 
-        if (alreadyInsertedOffering.isPresent()) {
-            throw new FirstDayNotEnglishException();
+            em.remove(alreadyInsertedOffering.get());
+            em.flush();
         }
 
         persist(wantsToBeOffering, offeringDTO.language);

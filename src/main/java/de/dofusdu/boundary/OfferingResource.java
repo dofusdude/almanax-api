@@ -901,7 +901,7 @@ public class OfferingResource {
         }
 
         try {
-            offeringRepository.persist(offeringDTO, offeringDTO.language);
+            offeringRepository.persist(offeringDTO, offeringDTO.language, false);
         } catch (FirstDayNotEnglishException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(errorProducer.englishDayFirst())
@@ -940,11 +940,8 @@ public class OfferingResource {
     })
     @PUT
     @Transactional(Transactional.TxType.REQUIRES_NEW)
-    @Counted(name = "updateCount", description = "Hits on update endpoint for languages.")
-    @Retry
-    @CircuitBreaker
-    @Timed(name = "updateTiming")
-    public Response update(@HeaderParam("Authorization") String apiKey,
+    @Path("translate")
+    public Response updateTranslations(@HeaderParam("Authorization") String apiKey,
                                           CreateOfferingDTO offeringDTO) {
         // Prepare responses.
         ApiResponse response = new ApiResponse(version, offeringDTO.language);
@@ -957,7 +954,7 @@ public class OfferingResource {
         }
 
         try {
-            offeringRepository.update(offeringDTO);
+            offeringRepository.updateTranslation(offeringDTO);
         } catch (FirstDayNotEnglishException e) {
             return Response.status(Response.Status.NOT_ACCEPTABLE)
                     .entity(errorProducer.noEntryForDate())
@@ -965,5 +962,58 @@ public class OfferingResource {
         }
 
         return Response.ok().build();
+    }
+
+    @Tag(name = "Z_Administrative")
+    @APIResponses({
+            @APIResponse(
+                    responseCode = "200",
+                    description = "OK"
+            ),
+            @APIResponse(
+                    responseCode = "401",
+                    description = "Unauthorized",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.UnautherizedResponse.class)
+                            )
+                    }
+            ),
+            @APIResponse(
+                    responseCode = "406",
+                    description = "Not Acceptable",
+                    content = {
+                            @Content(
+                                    mediaType = MediaType.APPLICATION_JSON,
+                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.NoEntryForDateResponse.class)
+                            )
+                    }
+            )
+    })
+    @PUT
+    @Transactional(Transactional.TxType.REQUIRES_NEW)
+    public Response update(@HeaderParam("Authorization") String apiKey,
+                           CreateOfferingDTO offeringDTO) {
+        // Prepare responses.
+        ApiResponse response = new ApiResponse(version, offeringDTO.language);
+        errorProducer.setBase(response);
+
+        if (apiKey == null || !apiKey.equals("Bearer " + this.apiKey)) {
+            return Response.status(Response.Status.UNAUTHORIZED)
+                    .entity(errorProducer.unautherized())
+                    .build();
+        }
+
+        boolean res;
+        try {
+            res = offeringRepository.update(offeringDTO);
+        } catch (FirstDayNotEnglishException e) {
+            return Response.status(Response.Status.NOT_ACCEPTABLE)
+                    .entity(errorProducer.noEntryForDate())
+                    .build();
+        }
+
+        return res ? Response.status(Response.Status.CREATED).build() : Response.ok().build();
     }
 }
