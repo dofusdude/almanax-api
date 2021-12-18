@@ -30,7 +30,9 @@ import de.dofusdu.exceptions.BonusTypeNotFoundException;
 import de.dofusdu.exceptions.FirstDayNotEnglishException;
 import de.dofusdu.util.DateConverter;
 import de.dofusdu.util.LanguageHelper;
+import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -56,6 +58,9 @@ public class OfferingRepository {
     private final ItemRepository itemRepository;
     private ItemSearch itemSearch;
     private EncObjectSwitch encObjectSwitch;
+
+    @ConfigProperty(name = "search.score.threshold")
+    int threshold;
 
     @Inject
     public OfferingRepository(EntityManager em,
@@ -168,7 +173,12 @@ public class OfferingRepository {
     public void persist(CreateOfferingDTO offeringDTO, String language, boolean recreate) {
         SearchResult searchResult;
         try {
-            searchResult = itemSearch.searchItem(offeringDTO.language, offeringDTO.item);
+            searchResult = itemSearch.searchItem(offeringDTO.language, offeringDTO.item, this.threshold);
+        } catch (ResteasyWebApplicationException nf) { // no item in that threshold
+            searchResult = new SearchResult();
+            searchResult.url = "";
+            searchResult.type = "";
+            searchResult.ankama_id = Long.valueOf(0);
         } catch (Exception e) {
             throw new NotFoundException();
         }

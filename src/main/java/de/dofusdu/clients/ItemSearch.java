@@ -20,10 +20,7 @@ import de.dofusdu.dto.encyclopedia.*;
 import de.dofusdu.dto.SearchResult;
 import org.eclipse.microprofile.rest.client.inject.RegisterRestClient;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/")
@@ -34,7 +31,8 @@ public interface ItemSearch {
     @GET
     @Path("/dofus/{language}/search/{search_string}")
     SearchResult searchItem(@PathParam("language") String language,
-                            @PathParam("search_string") String searchString);
+                            @PathParam("search_string") String searchString,
+                            @QueryParam("threshold") int threshold);
 
     @GET
     @Path("/dofus/{language}/resources/{ankama_id}")

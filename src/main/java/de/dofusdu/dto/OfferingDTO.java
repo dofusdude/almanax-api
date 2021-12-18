@@ -16,22 +16,14 @@
 
 package de.dofusdu.dto;
 
-import de.dofusdu.entity.Bonus;
-import de.dofusdu.entity.BonusType;
-import de.dofusdu.entity.Item;
+import de.dofusdu.dto.encyclopedia.ItemNoEncDTO;
 import de.dofusdu.entity.Offering;
 import de.dofusdu.util.DateConverter;
 
-import javax.json.bind.JsonbBuilder;
 import javax.json.bind.annotation.JsonbProperty;
 import javax.json.bind.annotation.JsonbTransient;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 
 public class OfferingDTO {
     public String date;
@@ -50,15 +42,8 @@ public class OfferingDTO {
     @JsonbProperty("item_url")
     public String item_url;
 
-
-    /*
-    public Offering toOffering(String language, SearchResult searchResult) {
-        return new Offering(DateConverter.toDate(DateConverter.fromString(date)),
-                itemQuantity,
-                new Bonus(bonus.name, language, new BonusType(bonus.type, language)),
-                new Item(item.name, language, item.pictureUrl, searchResult.url));
-    }
-     */
+    @JsonbProperty("enc_mapped")
+    public boolean encMapped;
 
     public static OfferingDTO from(Offering offering, String language, Object itemObject) {
         if (offering == null) {
@@ -72,8 +57,10 @@ public class OfferingDTO {
         offeringDTO.date = DateConverter.toLocalDate(offering.getDate()).toString();
         offeringDTO.itemQuantity = offering.getItemQuantity();
         offeringDTO.itemName = offering.getItem().getName(language);
-        offeringDTO.item_url = offering.getItem().getUrl().replace("/en/", "/"+language+"/");
-        offeringDTO.itemObject = itemObject;
+        offeringDTO.encMapped = itemObject != null;
+        offeringDTO.item_url = offeringDTO.encMapped ? offering.getItem().getUrl().replace("/en/", "/" + language + "/") : null;
+        offeringDTO.itemObject = offeringDTO.encMapped ? itemObject : new ItemNoEncDTO(offeringDTO.itemName);
+
         return offeringDTO;
     }
 
