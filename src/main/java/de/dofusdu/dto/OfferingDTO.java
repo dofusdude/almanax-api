@@ -16,14 +16,11 @@
 
 package de.dofusdu.dto;
 
-import de.dofusdu.dto.encyclopedia.ItemNoEncDTO;
 import de.dofusdu.entity.Offering;
 import de.dofusdu.util.DateConverter;
 
 import javax.json.bind.annotation.JsonbProperty;
-import javax.json.bind.annotation.JsonbTransient;
 import java.time.LocalDate;
-import java.util.Objects;
 
 public class OfferingDTO {
     public String date;
@@ -33,7 +30,7 @@ public class OfferingDTO {
 
     public BonusDTO bonus;
 
-    @JsonbTransient // do not serialize
+    @JsonbProperty("item_name")
     public String itemName;
 
     @JsonbProperty("item")
@@ -61,10 +58,9 @@ public class OfferingDTO {
         offeringDTO.item_url = offeringDTO.encMapped ? offering.getItem().getUrl().replace("/en/", "/" + language + "/") : null;
         if (offeringDTO.encMapped) {
             offeringDTO.itemObject = itemObject;
+            offeringDTO.itemName = null;
         } else {
-            ItemNoEncDTO itemBackup = new ItemNoEncDTO();
-            itemBackup.itemName = offeringDTO.itemName;
-            offeringDTO.itemObject = itemBackup;
+            offeringDTO.itemObject = null;
         }
 
         return offeringDTO;
@@ -72,18 +68,5 @@ public class OfferingDTO {
 
     public LocalDate getDate() {
         return DateConverter.fromString(date);
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OfferingDTO that = (OfferingDTO) o;
-        return Objects.equals(date, that.date) && Objects.equals(itemQuantity, that.itemQuantity) && Objects.equals(bonus, that.bonus) && Objects.equals(itemName, that.itemName) && Objects.equals(itemObject, that.itemObject);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(date, itemQuantity, bonus, itemName, itemObject);
     }
 }
