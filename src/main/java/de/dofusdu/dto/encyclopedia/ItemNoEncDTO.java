@@ -20,7 +20,7 @@ import javax.json.bind.annotation.JsonbProperty;
 import java.util.Objects;
 
 public class ItemNoEncDTO {
-    @JsonbProperty("item_name")
+    @JsonbProperty("name")
     public String itemName;
 
     public ItemNoEncDTO(String itemName) {
