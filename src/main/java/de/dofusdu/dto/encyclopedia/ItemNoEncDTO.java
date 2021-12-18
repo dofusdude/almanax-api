@@ -17,29 +17,8 @@
 package de.dofusdu.dto.encyclopedia;
 
 import javax.json.bind.annotation.JsonbProperty;
-import java.util.Objects;
 
 public class ItemNoEncDTO {
     @JsonbProperty("name")
     public String itemName;
-
-    public ItemNoEncDTO(String itemName) {
-        this.itemName = itemName;
-    }
-
-    public ItemNoEncDTO() {
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        ItemNoEncDTO that = (ItemNoEncDTO) o;
-        return Objects.equals(itemName, that.itemName);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(itemName);
-    }
 }

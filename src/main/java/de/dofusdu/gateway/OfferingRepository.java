@@ -175,10 +175,14 @@ public class OfferingRepository {
         try {
             searchResult = itemSearch.searchItem(offeringDTO.language, offeringDTO.item, this.threshold);
         } catch (ResteasyWebApplicationException nf) { // no item in that threshold
-            searchResult = new SearchResult();
-            searchResult.url = "";
-            searchResult.type = "";
-            searchResult.ankama_id = Long.valueOf(0);
+            if (nf.unwrap().getResponse().getStatus() == 404) {
+                searchResult = new SearchResult();
+                searchResult.url = "";
+                searchResult.type = "";
+                searchResult.ankama_id = Long.valueOf(0);
+            } else {
+                throw new NotFoundException();
+            }
         } catch (Exception e) {
             throw new NotFoundException();
         }

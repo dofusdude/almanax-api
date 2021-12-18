@@ -59,7 +59,13 @@ public class OfferingDTO {
         offeringDTO.itemName = offering.getItem().getName(language);
         offeringDTO.encMapped = itemObject != null;
         offeringDTO.item_url = offeringDTO.encMapped ? offering.getItem().getUrl().replace("/en/", "/" + language + "/") : null;
-        offeringDTO.itemObject = offeringDTO.encMapped ? itemObject : new ItemNoEncDTO(offeringDTO.itemName);
+        if (offeringDTO.encMapped) {
+            offeringDTO.itemObject = itemObject;
+        } else {
+            ItemNoEncDTO itemBackup = new ItemNoEncDTO();
+            itemBackup.itemName = offeringDTO.itemName;
+            offeringDTO.itemObject = itemBackup;
+        }
 
         return offeringDTO;
     }
