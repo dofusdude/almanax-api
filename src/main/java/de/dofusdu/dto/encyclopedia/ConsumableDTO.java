@@ -25,7 +25,7 @@ public class ConsumableDTO extends EncItemDTO {
     public String type;
     public Integer level;
 
-    public Collection<ConsumableEffectDTO> effects;
+    public Collection<String> effects;
     public String conditions;
     public Collection<RecipePositionDTO> recipe;
 
