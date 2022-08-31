@@ -203,7 +203,7 @@ public class OfferingRepository {
             }
 
             ItemsListEntryTyped item = res.get(0);
-            resUrl = "https://api.dofusdu.de/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype() + "/" + item.getAnkamaId().toString(); // no need for full url but keep consistent
+            resUrl = "https://api.dofusdu.de/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype() + "/" + item.getAnkamaId().toString();
             offeringDTO.itemPicture = item.getImageUrls().getSd() == null ? item.getImageUrls().getIcon() : item.getImageUrls().getSd(); // override the ankama linked picture
             
         } catch (Exception e) {

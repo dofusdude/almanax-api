@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ * Copyright 2022 Christopher Sieh (stelzo@steado.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,7 +20,11 @@ import org.acme.openapi.api.AllItemsApi;
 import org.acme.openapi.api.ConsumablesApi;
 import org.acme.openapi.api.EquipmentApi;
 import org.acme.openapi.api.ResourcesApi;
+import org.acme.openapi.model.Resource;
+import org.acme.openapi.model.Weapon;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
+
+import de.dofusdu.dto.ItemObjectDTO;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -46,26 +50,43 @@ public class EncObjectSwitch {
     ConsumablesApi consumablesApi;
 
 
-    public Object get(String url, String language) {
-        Object itemObject = null;
+    public ItemObjectDTO get(String url, String language) {
+        ItemObjectDTO itemObject = null;
         String[] split = url.split("/");
-        Integer ankamaId = Integer.parseInt(split[split.length - 1]);
+        Integer ankamaId = Integer.parseInt(split[split.length - 1].trim());
+        String ankamaEnGeneral = "https://www.dofus.com/en/mmorpg/encyclopedia";
 
-        if (ankamaId == null) {
-            throw new NotFoundException();
-        }
-
-        String filterTypeName = null;
         if (url.contains("resources")) {
-            itemObject = resourcesApi.getItemsResourcesSingle(language, ankamaId);
+            Resource resource = resourcesApi.getItemsResourcesSingle(language, ankamaId);
+            itemObject = new ItemObjectDTO();
+            itemObject.ankamaId = resource.getAnkamaId();
+            itemObject.name = resource.getName();
+            itemObject.imageUrl = resource.getImageUrls().getSd() == null ? resource.getImageUrls().getIcon() : resource.getImageUrls().getSd();
+            itemObject.ankamaUrl = ankamaEnGeneral;
+            itemObject.imageUrlLocal = itemObject.imageUrl;
+            itemObject.itemUrl = url;
         }
 
         if (url.contains("consumables")) {
-            itemObject = consumablesApi.getItemsConsumablesSingle(language, ankamaId);
+            Resource resource = consumablesApi.getItemsConsumablesSingle(language, ankamaId);
+            itemObject = new ItemObjectDTO();
+            itemObject.ankamaId = resource.getAnkamaId();
+            itemObject.name = resource.getName();
+            itemObject.imageUrl = resource.getImageUrls().getSd() == null ? resource.getImageUrls().getIcon() : resource.getImageUrls().getSd();
+            itemObject.ankamaUrl = ankamaEnGeneral;
+            itemObject.imageUrlLocal = itemObject.imageUrl;
+            itemObject.itemUrl = url;
         }
 
-        if (url.contains("equipment")) {
-            itemObject = equipmentApi.getItemsEquipmentSingle(language, ankamaId);
+        if (url.contains("equipment") || url.contains("weapons") || url.contains("pets")) {
+            Weapon weapon = equipmentApi.getItemsEquipmentSingle(language, ankamaId);
+            itemObject = new ItemObjectDTO();
+            itemObject.ankamaId = weapon.getAnkamaId();
+            itemObject.name = weapon.getName();
+            itemObject.imageUrl = weapon.getImageUrls().getSd() == null ? weapon.getImageUrls().getIcon() : weapon.getImageUrls().getSd();
+            itemObject.ankamaUrl = ankamaEnGeneral;
+            itemObject.imageUrlLocal = itemObject.imageUrl;
+            itemObject.itemUrl = url;
         }
 
         if (itemObject == null) {

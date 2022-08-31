@@ -34,7 +34,7 @@ public class OfferingDTO {
     public String itemName;
 
     @JsonbProperty("item")
-    public Object itemObject;
+    public ItemObjectDTO itemObject;
 
     @JsonbProperty("item_url")
     public String item_url;
@@ -42,7 +42,7 @@ public class OfferingDTO {
     @JsonbProperty("enc_mapped")
     public boolean encMapped;
 
-    public static OfferingDTO from(Offering offering, String language, Object itemObject) {
+    public static OfferingDTO from(Offering offering, String language, ItemObjectDTO itemObject) {
         if (offering == null) {
             return null;
         }
