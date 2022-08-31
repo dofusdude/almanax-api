@@ -1,0 +1,126 @@
+package org.acme.openapi.model;
+
+import javax.json.bind.annotation.JsonbProperty;
+
+
+public class MountListEntry  {
+
+
+    @JsonbProperty("ankama_id")
+    private Integer ankamaId;
+    private String name;
+
+    @JsonbProperty("family_name")
+    private String familyName;
+
+    @JsonbProperty("image_urls")
+    private ImageUrls imageUrls;
+
+    /**
+    * Get ankamaId
+    * @return ankamaId
+    **/
+    public Integer getAnkamaId() {
+        return ankamaId;
+    }
+
+    /**
+     * Set ankamaId
+     **/
+    public void setAnkamaId(Integer ankamaId) {
+        this.ankamaId = ankamaId;
+    }
+
+    public MountListEntry ankamaId(Integer ankamaId) {
+        this.ankamaId = ankamaId;
+        return this;
+    }
+
+    /**
+    * Get name
+    * @return name
+    **/
+    @JsonbProperty("name")
+    public String getName() {
+        return name;
+    }
+
+    /**
+     * Set name
+     **/
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public MountListEntry name(String name) {
+        this.name = name;
+        return this;
+    }
+
+    /**
+    * Get familyName
+    * @return familyName
+    **/
+    public String getFamilyName() {
+        return familyName;
+    }
+
+    /**
+     * Set familyName
+     **/
+    public void setFamilyName(String familyName) {
+        this.familyName = familyName;
+    }
+
+    public MountListEntry familyName(String familyName) {
+        this.familyName = familyName;
+        return this;
+    }
+
+    /**
+    * Get imageUrls
+    * @return imageUrls
+    **/
+    public ImageUrls getImageUrls() {
+        return imageUrls;
+    }
+
+    /**
+     * Set imageUrls
+     **/
+    public void setImageUrls(ImageUrls imageUrls) {
+        this.imageUrls = imageUrls;
+    }
+
+    public MountListEntry imageUrls(ImageUrls imageUrls) {
+        this.imageUrls = imageUrls;
+        return this;
+    }
+
+    /**
+     * Create a string representation of this pojo.
+     **/
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("class MountListEntry {\n");
+
+        sb.append("    ankamaId: ").append(toIndentedString(ankamaId)).append("\n");
+        sb.append("    name: ").append(toIndentedString(name)).append("\n");
+        sb.append("    familyName: ").append(toIndentedString(familyName)).append("\n");
+        sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
+        sb.append("}");
+        return sb.toString();
+    }
+
+    /**
+     * Convert the given object to string with each line indented by 4 spaces
+     * (except the first line).
+     */
+    private static String toIndentedString(Object o) {
+        if (o == null) {
+            return "null";
+        }
+        return o.toString().replace("\n", "\n    ");
+    }
+}

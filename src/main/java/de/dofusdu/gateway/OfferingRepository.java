@@ -17,10 +17,8 @@
 package de.dofusdu.gateway;
 
 import de.dofusdu.clients.EncObjectSwitch;
-import de.dofusdu.clients.ItemSearch;
 import de.dofusdu.dto.CreateOfferingDTO;
 import de.dofusdu.dto.OfferingDTO;
-import de.dofusdu.dto.SearchResult;
 import de.dofusdu.entity.Bonus;
 import de.dofusdu.entity.BonusType;
 import de.dofusdu.entity.Item;
@@ -30,9 +28,14 @@ import de.dofusdu.exceptions.BonusTypeNotFoundException;
 import de.dofusdu.exceptions.FirstDayNotEnglishException;
 import de.dofusdu.util.DateConverter;
 import de.dofusdu.util.LanguageHelper;
+
+import org.acme.openapi.api.AllItemsApi;
+import org.acme.openapi.api.ConsumablesApi;
+import org.acme.openapi.api.EquipmentApi;
+import org.acme.openapi.api.ResourcesApi;
+import org.acme.openapi.model.ItemsListEntryTyped;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
-import org.jboss.resteasy.client.exception.ResteasyWebApplicationException;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -44,7 +47,6 @@ import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -56,30 +58,51 @@ public class OfferingRepository {
     private final BonusTypeRepository bonusTypeRepository;
     private final BonusRepository bonusRepository;
     private final ItemRepository itemRepository;
-    private ItemSearch itemSearch;
     private EncObjectSwitch encObjectSwitch;
 
     @ConfigProperty(name = "search.score.threshold")
     int threshold;
 
     @Inject
+    @RestClient
+    AllItemsApi allItemsApi;
+
+    @Inject
+    @RestClient
+    EquipmentApi equipmentApi;
+
+    @Inject
+    @RestClient
+    ResourcesApi resourcesApi;
+
+    @Inject
+    @RestClient
+    ConsumablesApi consumablesApi;
+
+    @Inject
     public OfferingRepository(EntityManager em,
                               BonusTypeRepository bonusTypeRepository,
                               BonusRepository bonusRepository,
                               ItemRepository itemRepository,
-                              @RestClient ItemSearch itemSearch,
-                              EncObjectSwitch encObjectSwitch) {
+                              EncObjectSwitch encObjectSwitch,
+                              @RestClient AllItemsApi allItemsApi,
+                              @RestClient EquipmentApi equipmentApi,
+                              @RestClient ResourcesApi resourcesApi,
+                              @RestClient ConsumablesApi consumablesApi) {
         this.em = em;
         this.bonusTypeRepository = bonusTypeRepository;
         this.bonusRepository = bonusRepository;
         this.itemRepository = itemRepository;
-        this.itemSearch = itemSearch;
+        this.allItemsApi = allItemsApi;
+        this.equipmentApi = equipmentApi;
+        this.resourcesApi = resourcesApi;
+        this.consumablesApi = consumablesApi;
         this.encObjectSwitch = encObjectSwitch;
     }
 
 
     @Transactional
-    private Offering persist(Offering offering, String language) throws BonusTypeForDayNotFoundException {
+    public Offering persist(Offering offering, String language) throws BonusTypeForDayNotFoundException {
         // ensure bonusType exists
         BonusType bonusType = bonusTypeRepository.persistIfNotExistent(offering.getBonus().getType(), language);
 
@@ -121,7 +144,7 @@ public class OfferingRepository {
     }
 
     @Transactional(value = Transactional.TxType.SUPPORTS)
-    private boolean offeringChanged(CreateOfferingDTO newOffering, Offering persistentOffering) {
+    public boolean offeringChanged(CreateOfferingDTO newOffering, Offering persistentOffering) {
         String lang = LanguageHelper.getString(LanguageHelper.Language.ENGLISH);
         if (!newOffering.item.equals(persistentOffering.getItem().getName(lang))) {
             return true; // item
@@ -171,27 +194,23 @@ public class OfferingRepository {
      */
     @Transactional
     public void persist(CreateOfferingDTO offeringDTO, String language, boolean recreate) {
-        SearchResult searchResult;
+        List<ItemsListEntryTyped> res;
+        String resUrl = "";
         try {
-            searchResult = itemSearch.searchItem(offeringDTO.language, offeringDTO.item, this.threshold);
-        } catch (ResteasyWebApplicationException nf) { // no item in that threshold
-            if (nf.unwrap().getResponse().getStatus() == 404) {
-                searchResult = new SearchResult();
-                searchResult.url = "";
-                searchResult.type = "";
-                searchResult.ankama_id = Long.valueOf(0);
-            } else {
+            res = allItemsApi.getItemsAllSearch(offeringDTO.language, offeringDTO.item, null, null, null);
+            if (res.isEmpty()) {
                 throw new NotFoundException();
             }
+
+            ItemsListEntryTyped item = res.get(0);
+            resUrl = "https://api.dofusdu.de/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype() + "/" + item.getAnkamaId().toString(); // no need for full url but keep consistent
+            offeringDTO.itemPicture = item.getImageUrls().getSd() == null ? item.getImageUrls().getIcon() : item.getImageUrls().getSd(); // override the ankama linked picture
+            
         } catch (Exception e) {
             throw new NotFoundException();
         }
 
-        if (searchResult.type == null) {
-            throw new NotFoundException();
-        }
-
-        Offering wantsToBeOffering = offeringDTO.toOffering(language, searchResult.url);
+        Offering wantsToBeOffering = offeringDTO.toOffering(language, resUrl);
         Optional<Offering> alreadyInsertedOffering = singleFromDate(offeringDTO.getDate());
         if (!recreate) {
             if (alreadyInsertedOffering.isPresent()) {
@@ -237,7 +256,6 @@ public class OfferingRepository {
     }
 
     @Transactional
-    //@CacheResult(cacheName = "singleDate")
     public Optional<OfferingDTO> singleDTOFromDate(LocalDate date, String language) {
 
         Optional<Offering> offering = singleFromDate(date);
@@ -253,7 +271,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    private List<Offering> nextOfferingWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias, Integer maxResults) {
+    public List<Offering> nextOfferingWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias, Integer maxResults) {
         Optional<BonusType> bonusType = bonusTypeRepository.findByAlias(bonusUrlAlias);
         if (bonusType.isEmpty()) {
             throw new BonusTypeNotFoundException(bonusUrlAlias, bonusTypeRepository.getAllAlias());
@@ -279,7 +297,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    private Optional<Offering> nextOfferingWithBonus(LocalDate startDate, String bonusUrlAlias) {
+    public Optional<Offering> nextOfferingWithBonus(LocalDate startDate, String bonusUrlAlias) {
         List<Offering> offerings = nextOfferingWithBonus(startDate, startDate.plusYears(1), bonusUrlAlias, 1);
         if (offerings.isEmpty()) {
             return Optional.empty();
@@ -290,7 +308,6 @@ public class OfferingRepository {
 
 
     @Transactional
-    //@CacheResult(cacheName = "bonusOfferings")
     public Optional<OfferingDTO> nextOfferingWithBonusDTO(LocalDate startDate, String bonusUrlAlias, String language) {
         Optional<Offering> offeringDTO = nextOfferingWithBonus(startDate, bonusUrlAlias);
         if (offeringDTO.isEmpty()) {
@@ -301,7 +318,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    private List<Offering> nextOfferingsWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
+    public List<Offering> nextOfferingsWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
         return nextOfferingWithBonus(startDate, endDate, bonusUrlAlias, null);
     }
 
@@ -311,7 +328,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    private List<Offering> listFromDateRange(LocalDate startDate, LocalDate endDate) {
+    public List<Offering> listFromDateRange(LocalDate startDate, LocalDate endDate) {
         TypedQuery<Offering> query = this.em.createQuery("SELECT o FROM Offering o WHERE (o.date BETWEEN :startDate AND :endDate)", Offering.class);
         query.setLockMode(LockModeType.PESSIMISTIC_READ);
         query.setParameter("startDate", DateConverter.toDate(startDate));
@@ -328,7 +345,7 @@ public class OfferingRepository {
     }
 
     @Transactional
-    private List<Offering> listFromDateRangeWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
+    public List<Offering> listFromDateRangeWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
         Optional<BonusType> bonusType = bonusTypeRepository.findByAlias(bonusUrlAlias);
         if (bonusType.isEmpty()) {
             throw new BonusTypeNotFoundException(bonusUrlAlias, bonusTypeRepository.getAllAlias());
@@ -350,7 +367,6 @@ public class OfferingRepository {
     }
 
     @Transactional
-    //@CacheResult(cacheName = "dateRangeList")
     public List<OfferingDTO> listFromDateRangeDTO(LocalDate startDate, LocalDate endDate, String language) {
         return listFromDateRange(startDate, endDate).stream().map(offering -> OfferingDTO.from(offering, language, encObjectSwitch.get(offering.getItem().getUrl(), language))).collect(Collectors.toList());
     }

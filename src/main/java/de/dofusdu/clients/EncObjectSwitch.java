@@ -16,36 +16,62 @@
 
 package de.dofusdu.clients;
 
+import org.acme.openapi.api.AllItemsApi;
+import org.acme.openapi.api.ConsumablesApi;
+import org.acme.openapi.api.EquipmentApi;
+import org.acme.openapi.api.ResourcesApi;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.ws.rs.NotFoundException;
 
 @RequestScoped
 public class EncObjectSwitch {
 
     @Inject
     @RestClient
-    ItemSearch itemSearch;
+    AllItemsApi allItemsApi;
+
+    @Inject
+    @RestClient
+    EquipmentApi equipmentApi;
+
+    @Inject
+    @RestClient
+    ResourcesApi resourcesApi;
+
+    @Inject
+    @RestClient
+    ConsumablesApi consumablesApi;
+
 
     public Object get(String url, String language) {
         Object itemObject = null;
         String[] split = url.split("/");
+        Integer ankamaId = Integer.parseInt(split[split.length - 1]);
+
+        if (ankamaId == null) {
+            throw new NotFoundException();
+        }
+
+        String filterTypeName = null;
         if (url.contains("resources")) {
-            itemObject = itemSearch.getResource(language, Long.valueOf(split[split.length-1]));
+            itemObject = resourcesApi.getItemsResourcesSingle(language, ankamaId);
         }
+
         if (url.contains("consumables")) {
-            itemObject = itemSearch.getConsumable(language, Long.valueOf(split[split.length-1]));
+            itemObject = consumablesApi.getItemsConsumablesSingle(language, ankamaId);
         }
+
         if (url.contains("equipment")) {
-            itemObject = itemSearch.getEquipment(language, Long.valueOf(split[split.length-1]));
+            itemObject = equipmentApi.getItemsEquipmentSingle(language, ankamaId);
         }
-        if (url.contains("weapons")) {
-            itemObject = itemSearch.getWeapon(language, Long.valueOf(split[split.length-1]));
+
+        if (itemObject == null) {
+            throw new NotFoundException();
         }
-        if (url.contains("pets")) {
-            itemObject = itemSearch.getPet(language, Long.valueOf(split[split.length-1]));
-        }
+
         return itemObject;
     }
 }

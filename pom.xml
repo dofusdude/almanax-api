@@ -93,6 +93,11 @@
       <groupId>io.quarkus</groupId>
       <artifactId>quarkus-smallrye-openapi</artifactId>
     </dependency>
+    <dependency>
+      <groupId>io.quarkiverse.openapi.generator</groupId>
+      <artifactId>quarkus-openapi-generator</artifactId>
+      <version>0.9.0</version>
+    </dependency>
   </dependencies>
   <build>
     <plugins>
