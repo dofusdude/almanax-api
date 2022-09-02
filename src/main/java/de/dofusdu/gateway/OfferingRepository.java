@@ -100,9 +100,7 @@ public class OfferingRepository {
         this.encObjectSwitch = encObjectSwitch;
     }
 
-
-    @Transactional
-    public Offering persist(Offering offering, String language) throws BonusTypeForDayNotFoundException {
+    private Offering persist(Offering offering, String language) throws BonusTypeForDayNotFoundException {
         // ensure bonusType exists
         BonusType bonusType = bonusTypeRepository.persistIfNotExistent(offering.getBonus().getType(), language);
 
@@ -143,8 +141,7 @@ public class OfferingRepository {
 
     }
 
-    @Transactional(value = Transactional.TxType.SUPPORTS)
-    public boolean offeringChanged(CreateOfferingDTO newOffering, Offering persistentOffering) {
+    private boolean offeringChanged(CreateOfferingDTO newOffering, Offering persistentOffering) {
         String lang = LanguageHelper.getString(LanguageHelper.Language.ENGLISH);
         if (!newOffering.item.equals(persistentOffering.getItem().getName(lang))) {
             return true; // item
@@ -270,8 +267,7 @@ public class OfferingRepository {
         return Optional.of(res);
     }
 
-    @Transactional
-    public List<Offering> nextOfferingWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias, Integer maxResults) {
+    private List<Offering> nextOfferingWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias, Integer maxResults) {
         Optional<BonusType> bonusType = bonusTypeRepository.findByAlias(bonusUrlAlias);
         if (bonusType.isEmpty()) {
             throw new BonusTypeNotFoundException(bonusUrlAlias, bonusTypeRepository.getAllAlias());
@@ -296,8 +292,7 @@ public class OfferingRepository {
         return offerings;
     }
 
-    @Transactional
-    public Optional<Offering> nextOfferingWithBonus(LocalDate startDate, String bonusUrlAlias) {
+    private Optional<Offering> nextOfferingWithBonus(LocalDate startDate, String bonusUrlAlias) {
         List<Offering> offerings = nextOfferingWithBonus(startDate, startDate.plusYears(1), bonusUrlAlias, 1);
         if (offerings.isEmpty()) {
             return Optional.empty();
@@ -327,8 +322,7 @@ public class OfferingRepository {
         return nextOfferingsWithBonus(startDate, endDate, bonusUrlAlias).stream().map(offering -> OfferingDTO.from(offering, language, encObjectSwitch.get(offering.getItem().getUrl(), language))).collect(Collectors.toList());
     }
 
-    @Transactional
-    public List<Offering> listFromDateRange(LocalDate startDate, LocalDate endDate) {
+    private List<Offering> listFromDateRange(LocalDate startDate, LocalDate endDate) {
         TypedQuery<Offering> query = this.em.createQuery("SELECT o FROM Offering o WHERE (o.date BETWEEN :startDate AND :endDate)", Offering.class);
         query.setLockMode(LockModeType.PESSIMISTIC_READ);
         query.setParameter("startDate", DateConverter.toDate(startDate));
@@ -344,8 +338,7 @@ public class OfferingRepository {
         return offerings;
     }
 
-    @Transactional
-    public List<Offering> listFromDateRangeWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
+    private List<Offering> listFromDateRangeWithBonus(LocalDate startDate, LocalDate endDate, String bonusUrlAlias) {
         Optional<BonusType> bonusType = bonusTypeRepository.findByAlias(bonusUrlAlias);
         if (bonusType.isEmpty()) {
             throw new BonusTypeNotFoundException(bonusUrlAlias, bonusTypeRepository.getAllAlias());
