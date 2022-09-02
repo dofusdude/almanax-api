@@ -1,9 +1,11 @@
 package org.acme.openapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.json.bind.annotation.JsonbProperty;
 import java.util.List;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class Cosmetic  {
 
 

@@ -1,11 +1,14 @@
 package org.acme.openapi.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.json.bind.annotation.JsonbProperty;
 
 
 /**
   * All images except icon are rendered in the background which can take some time (up to hours if all data is completely generated from scratch). Because of this, they can be null if they are not yet rendered.
  **/
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageUrls  {
 
     /**
