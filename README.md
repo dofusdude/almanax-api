@@ -12,7 +12,7 @@ The main features are
 - all time relative APIs support timezones :clock1: (default Europe/Paris)
 - everything above (including language agnostic links) in english :uk:, french :fr:, italian :it:, spanish :es: and german :de:
 
-Depends on the [Dofus API](https://dofusdu.de) for the items.
+Depends on the [Dofus API](https://docs.dofusdu.de) for the items.
 
 ## Usage
 See the OpenAPI or SwaggerUI endpoint for types and examples:
