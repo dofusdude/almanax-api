@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LinksPaged  {
 
@@ -17,7 +19,7 @@ public class LinksPaged  {
     * Get first
     * @return first
     **/
-    @JsonProperty("first")
+    @JsonbProperty("first")
     public String getFirst() {
         return first;
     }
@@ -38,7 +40,7 @@ public class LinksPaged  {
     * Get prev
     * @return prev
     **/
-    @JsonProperty("prev")
+    @JsonbProperty("prev")
     public String getPrev() {
         return prev;
     }
@@ -59,7 +61,7 @@ public class LinksPaged  {
     * Get next
     * @return next
     **/
-    @JsonProperty("next")
+    @JsonbProperty("next")
     public String getNext() {
         return next;
     }
@@ -80,7 +82,7 @@ public class LinksPaged  {
     * Get last
     * @return last
     **/
-    @JsonProperty("last")
+    @JsonbProperty("last")
     public String getLast() {
         return last;
     }

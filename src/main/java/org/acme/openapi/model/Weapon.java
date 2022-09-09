@@ -14,51 +14,53 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Weapon  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
 
-    @JsonProperty("is_weapon")
+    @JsonbProperty("is_weapon")
     private Boolean isWeapon;
     private Integer level;
     private Integer pods;
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
-    @JsonProperty("critical_hit_probability")
+    @JsonbProperty("critical_hit_probability")
     private Integer criticalHitProbability;
-    @JsonProperty("critical_hit_bonus")
+    @JsonbProperty("critical_hit_bonus")
     private Integer criticalHitBonus;
-    @JsonProperty("is_two_handed")
+    @JsonbProperty("is_two_handed")
     private Boolean isTwoHanded;
-    @JsonProperty("max_cast_per_turn")
+    @JsonbProperty("max_cast_per_turn")
     private Integer maxCastPerTurn;
-    @JsonProperty("ap_cost")
+    @JsonbProperty("ap_cost")
     private Integer apCost;
     private WeaponRange range;
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
-    @JsonProperty("has_parent_set")
+    @JsonbProperty("has_parent_set")
     private Boolean hasParentSet;
-    @JsonProperty("parent_set")
+    @JsonbProperty("parent_set")
     private EquipmentParentSet parentSet;
 
     /**
     * Get ankamaId
     * @return ankamaId
     **/
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -79,7 +81,7 @@ public class Weapon  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -100,7 +102,7 @@ public class Weapon  {
     * Get description
     * @return description
     **/
-    @JsonProperty("description")
+    @JsonbProperty("description")
     public String getDescription() {
         return description;
     }
@@ -121,7 +123,7 @@ public class Weapon  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -142,7 +144,7 @@ public class Weapon  {
     * always true when the item is a weapon. Many fields are now available. Always check for this flag first when getting single equipment items.
     * @return isWeapon
     **/
-    @JsonProperty("is_weapon")
+    @JsonbProperty("is_weapon")
     public Boolean getIsWeapon() {
         return isWeapon;
     }
@@ -163,7 +165,7 @@ public class Weapon  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -184,7 +186,7 @@ public class Weapon  {
     * Get pods
     * @return pods
     **/
-    @JsonProperty("pods")
+    @JsonbProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -205,7 +207,7 @@ public class Weapon  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -226,7 +228,7 @@ public class Weapon  {
     * Get hasEffects
     * @return hasEffects
     **/
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     public Boolean getHasEffects() {
         return hasEffects;
     }
@@ -247,7 +249,7 @@ public class Weapon  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -272,7 +274,7 @@ public class Weapon  {
     * Get hasConditions
     * @return hasConditions
     **/
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     public Boolean getHasConditions() {
         return hasConditions;
     }
@@ -293,7 +295,7 @@ public class Weapon  {
     * Get conditions
     * @return conditions
     **/
-    @JsonProperty("conditions")
+    @JsonbProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -318,7 +320,7 @@ public class Weapon  {
     * Get criticalHitProbability
     * @return criticalHitProbability
     **/
-    @JsonProperty("critical_hit_probability")
+    @JsonbProperty("critical_hit_probability")
     public Integer getCriticalHitProbability() {
         return criticalHitProbability;
     }
@@ -339,7 +341,7 @@ public class Weapon  {
     * Get criticalHitBonus
     * @return criticalHitBonus
     **/
-    @JsonProperty("critical_hit_bonus")
+    @JsonbProperty("critical_hit_bonus")
     public Integer getCriticalHitBonus() {
         return criticalHitBonus;
     }
@@ -360,7 +362,7 @@ public class Weapon  {
     * Get isTwoHanded
     * @return isTwoHanded
     **/
-    @JsonProperty("is_two_handed")
+    @JsonbProperty("is_two_handed")
     public Boolean getIsTwoHanded() {
         return isTwoHanded;
     }
@@ -381,7 +383,7 @@ public class Weapon  {
     * Get maxCastPerTurn
     * @return maxCastPerTurn
     **/
-    @JsonProperty("max_cast_per_turn")
+    @JsonbProperty("max_cast_per_turn")
     public Integer getMaxCastPerTurn() {
         return maxCastPerTurn;
     }
@@ -402,7 +404,7 @@ public class Weapon  {
     * Get apCost
     * @return apCost
     **/
-    @JsonProperty("ap_cost")
+    @JsonbProperty("ap_cost")
     public Integer getApCost() {
         return apCost;
     }
@@ -423,7 +425,7 @@ public class Weapon  {
     * Get range
     * @return range
     **/
-    @JsonProperty("range")
+    @JsonbProperty("range")
     public WeaponRange getRange() {
         return range;
     }
@@ -444,7 +446,7 @@ public class Weapon  {
     * Get hasRecipe
     * @return hasRecipe
     **/
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     public Boolean getHasRecipe() {
         return hasRecipe;
     }
@@ -465,7 +467,7 @@ public class Weapon  {
     * Get recipe
     * @return recipe
     **/
-    @JsonProperty("recipe")
+    @JsonbProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }
@@ -490,7 +492,7 @@ public class Weapon  {
     * Get hasParentSet
     * @return hasParentSet
     **/
-    @JsonProperty("has_parent_set")
+    @JsonbProperty("has_parent_set")
     public Boolean getHasParentSet() {
         return hasParentSet;
     }
@@ -511,7 +513,7 @@ public class Weapon  {
     * Get parentSet
     * @return parentSet
     **/
-    @JsonProperty("parent_set")
+    @JsonbProperty("parent_set")
     public EquipmentParentSet getParentSet() {
         return parentSet;
     }

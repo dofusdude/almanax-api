@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 /**
   * All images except icon are rendered in the background which can take some time (up to hours if all data is completely generated from scratch). Because of this, they can be null if they are not yet rendered.
@@ -32,7 +34,7 @@ public class ImageUrls  {
     * 60x60 px, always available
     * @return icon
     **/
-    @JsonProperty("icon")
+    @JsonbProperty("icon")
     public String getIcon() {
         return icon;
     }
@@ -53,7 +55,7 @@ public class ImageUrls  {
     * 200x200 px
     * @return sd
     **/
-    @JsonProperty("sd")
+    @JsonbProperty("sd")
     public String getSd() {
         return sd;
     }
@@ -74,7 +76,7 @@ public class ImageUrls  {
     * 400x400 px
     * @return hq
     **/
-    @JsonProperty("hq")
+    @JsonbProperty("hq")
     public String getHq() {
         return hq;
     }
@@ -95,7 +97,7 @@ public class ImageUrls  {
     * 800x800 px
     * @return hd
     **/
-    @JsonProperty("hd")
+    @JsonbProperty("hd")
     public String getHd() {
         return hd;
     }

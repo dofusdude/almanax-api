@@ -12,25 +12,27 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Resource  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
     private Integer level;
     private Integer pods;
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
 
@@ -38,7 +40,6 @@ public class Resource  {
     * Get ankamaId
     * @return ankamaId
     **/
-    @JsonProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -59,7 +60,7 @@ public class Resource  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -80,7 +81,7 @@ public class Resource  {
     * Get description
     * @return description
     **/
-    @JsonProperty("description")
+    @JsonbProperty("description")
     public String getDescription() {
         return description;
     }
@@ -101,7 +102,7 @@ public class Resource  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -122,7 +123,7 @@ public class Resource  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -143,7 +144,7 @@ public class Resource  {
     * Get pods
     * @return pods
     **/
-    @JsonProperty("pods")
+    @JsonbProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -164,7 +165,7 @@ public class Resource  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -185,7 +186,7 @@ public class Resource  {
     * Get hasEffects
     * @return hasEffects
     **/
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     public Boolean getHasEffects() {
         return hasEffects;
     }
@@ -206,7 +207,7 @@ public class Resource  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -231,7 +232,7 @@ public class Resource  {
     * Get hasConditions
     * @return hasConditions
     **/
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     public Boolean getHasConditions() {
         return hasConditions;
     }
@@ -252,7 +253,7 @@ public class Resource  {
     * Get conditions
     * @return conditions
     **/
-    @JsonProperty("conditions")
+    @JsonbProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -277,7 +278,7 @@ public class Resource  {
     * Get hasRecipe
     * @return hasRecipe
     **/
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     public Boolean getHasRecipe() {
         return hasRecipe;
     }
@@ -298,7 +299,7 @@ public class Resource  {
     * Get recipe
     * @return recipe
     **/
-    @JsonProperty("recipe")
+    @JsonbProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }

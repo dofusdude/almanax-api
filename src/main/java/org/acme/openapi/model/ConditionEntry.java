@@ -6,11 +6,13 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ConditionEntry  {
 
     private String operator;
-    @JsonProperty("int_value")
+    @JsonbProperty("int_value")
     private Integer intValue;
     private EffectsEntryType element;
 
@@ -18,7 +20,7 @@ public class ConditionEntry  {
     * Get operator
     * @return operator
     **/
-    @JsonProperty("operator")
+    @JsonbProperty("operator")
     public String getOperator() {
         return operator;
     }
@@ -59,7 +61,7 @@ public class ConditionEntry  {
     * Get element
     * @return element
     **/
-    @JsonProperty("element")
+    @JsonbProperty("element")
     public EffectsEntryType getElement() {
         return element;
     }

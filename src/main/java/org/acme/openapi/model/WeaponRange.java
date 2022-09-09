@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class WeaponRange  {
 
@@ -15,7 +17,7 @@ public class WeaponRange  {
     * Get min
     * @return min
     **/
-    @JsonProperty("min")
+    @JsonbProperty("min")
     public Integer getMin() {
         return min;
     }
@@ -36,7 +38,7 @@ public class WeaponRange  {
     * Get max
     * @return max
     **/
-    @JsonProperty("max")
+    @JsonbProperty("max")
     public Integer getMax() {
         return max;
     }

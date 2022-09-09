@@ -12,10 +12,12 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Cosmetic  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
@@ -23,18 +25,18 @@ public class Cosmetic  {
     private Integer level;
     private Integer pods;
 
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
 
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
 
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
 
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
 
@@ -62,7 +64,7 @@ public class Cosmetic  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -83,7 +85,7 @@ public class Cosmetic  {
     * Get description
     * @return description
     **/
-    @JsonProperty("description")
+    @JsonbProperty("description")
     public String getDescription() {
         return description;
     }
@@ -104,7 +106,7 @@ public class Cosmetic  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -125,7 +127,7 @@ public class Cosmetic  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -146,7 +148,7 @@ public class Cosmetic  {
     * Get pods
     * @return pods
     **/
-    @JsonProperty("pods")
+    @JsonbProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -207,7 +209,7 @@ public class Cosmetic  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -232,7 +234,7 @@ public class Cosmetic  {
     * Get hasConditions
     * @return hasConditions
     **/
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     public Boolean getHasConditions() {
         return hasConditions;
     }
@@ -253,7 +255,7 @@ public class Cosmetic  {
     * Get conditions
     * @return conditions
     **/
-    @JsonProperty("conditions")
+    @JsonbProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -278,7 +280,7 @@ public class Cosmetic  {
     * Get hasRecipe
     * @return hasRecipe
     **/
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     public Boolean getHasRecipe() {
         return hasRecipe;
     }
@@ -299,7 +301,7 @@ public class Cosmetic  {
     * Get recipe
     * @return recipe
     **/
-    @JsonProperty("recipe")
+    @JsonbProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }

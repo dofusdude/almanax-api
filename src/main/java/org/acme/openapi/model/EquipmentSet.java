@@ -8,16 +8,18 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EquipmentSet  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
-    @JsonProperty("equipment_ids")
+    @JsonbProperty("equipment_ids")
     private List<Integer> equipmentIds = null;
 
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     private Boolean hasEffects;
     private List<List<EffectsEntry>> effects = null;
     private Integer level;
@@ -46,7 +48,7 @@ public class EquipmentSet  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -67,7 +69,7 @@ public class EquipmentSet  {
     * Get equipmentIds
     * @return equipmentIds
     **/
-    @JsonProperty("equipment_ids")
+    @JsonbProperty("equipment_ids")
     public List<Integer> getEquipmentIds() {
         return equipmentIds;
     }
@@ -92,7 +94,7 @@ public class EquipmentSet  {
     * Get hasEffects
     * @return hasEffects
     **/
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     public Boolean getHasEffects() {
         return hasEffects;
     }
@@ -113,7 +115,7 @@ public class EquipmentSet  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<List<EffectsEntry>> getEffects() {
         return effects;
     }
@@ -138,7 +140,7 @@ public class EquipmentSet  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }

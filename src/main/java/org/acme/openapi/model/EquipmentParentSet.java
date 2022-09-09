@@ -5,6 +5,8 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EquipmentParentSet  {
 
@@ -15,7 +17,7 @@ public class EquipmentParentSet  {
     * Get id
     * @return id
     **/
-    @JsonProperty("id")
+    @JsonbProperty("id")
     public Integer getId() {
         return id;
     }
@@ -36,7 +38,7 @@ public class EquipmentParentSet  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }

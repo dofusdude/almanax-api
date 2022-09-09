@@ -6,18 +6,20 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MountListEntry  {
 
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
 
-    @JsonProperty("family_namye")
+    @JsonbProperty("family_namye")
     private String familyName;
 
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
 
     /**
@@ -44,7 +46,7 @@ public class MountListEntry  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -65,7 +67,7 @@ public class MountListEntry  {
     * Get familyName
     * @return familyName
     **/
-    @JsonProperty("family_name")
+    @JsonbProperty("family_name")
     public String getFamilyName() {
         return familyName;
     }
@@ -86,7 +88,7 @@ public class MountListEntry  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }

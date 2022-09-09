@@ -9,20 +9,22 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Mount  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
 
-    @JsonProperty("family_name")
+    @JsonbProperty("family_name")
     private String familyName;
 
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
 
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
 
@@ -50,7 +52,7 @@ public class Mount  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -91,7 +93,7 @@ public class Mount  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -112,7 +114,7 @@ public class Mount  {
     * Get hasEffects
     * @return hasEffects
     **/
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     public Boolean getHasEffects() {
         return hasEffects;
     }
@@ -133,7 +135,7 @@ public class Mount  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }

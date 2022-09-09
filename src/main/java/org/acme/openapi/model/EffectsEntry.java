@@ -6,19 +6,21 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EffectsEntry  {
 
-    @JsonProperty("int_minimum")
+    @JsonbProperty("int_minimum")
     private Integer intMinimum;
-    @JsonProperty("int_maximum")
+    @JsonbProperty("int_maximum")
     private Integer intMaximum;
     private EffectsEntryType type;
 
-    @JsonProperty("ignore_int_min")
+    @JsonbProperty("ignore_int_min")
     private Boolean ignoreIntMin;
 
-    @JsonProperty("ignore_int_max")
+    @JsonbProperty("ignore_int_max")
     private Boolean ignoreIntMax;
     private String formatted;
 
@@ -47,7 +49,7 @@ public class EffectsEntry  {
     * maximum int value, if not ignore_int_max and not ignore_int_min, the effect has a range value
     * @return intMaximum
     **/
-    @JsonProperty("int_maximum")
+    @JsonbProperty("int_maximum")
     public Integer getIntMaximum() {
         return intMaximum;
     }
@@ -68,7 +70,7 @@ public class EffectsEntry  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public EffectsEntryType getType() {
         return type;
     }
@@ -89,7 +91,7 @@ public class EffectsEntry  {
     * ignore the int min field because the actual value is a string. For readability the templated field is the only important field in this case. 
     * @return ignoreIntMin
     **/
-    @JsonProperty("ignore_int_min")
+    @JsonbProperty("ignore_int_min")
     public Boolean getIgnoreIntMin() {
         return ignoreIntMin;
     }
@@ -110,7 +112,7 @@ public class EffectsEntry  {
     * ignore the int max field, if ignore_int_min is true, int min is a single value
     * @return ignoreIntMax
     **/
-    @JsonProperty("ignore_int_max")
+    @JsonbProperty("ignore_int_max")
     public Boolean getIgnoreIntMax() {
         return ignoreIntMax;
     }
@@ -131,7 +133,7 @@ public class EffectsEntry  {
     * all fields from above encoded in a single string
     * @return formatted
     **/
-    @JsonProperty("formatted")
+    @JsonbProperty("formatted")
     public String getFormatted() {
         return formatted;
     }

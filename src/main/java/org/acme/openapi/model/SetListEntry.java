@@ -5,10 +5,12 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SetListEntry  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private Integer items;
@@ -18,7 +20,7 @@ public class SetListEntry  {
     * Get ankamaId
     * @return ankamaId
     **/
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -39,7 +41,7 @@ public class SetListEntry  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -60,7 +62,7 @@ public class SetListEntry  {
     * amount
     * @return items
     **/
-    @JsonProperty("items")
+    @JsonbProperty("items")
     public Integer getItems() {
         return items;
     }
@@ -81,7 +83,7 @@ public class SetListEntry  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }

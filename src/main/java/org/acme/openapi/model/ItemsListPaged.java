@@ -9,6 +9,8 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemsListPaged  {
 
@@ -19,7 +21,7 @@ public class ItemsListPaged  {
     * Get links
     * @return links
     **/
-    @JsonProperty("_links")
+    @JsonbProperty("_links")
     public LinksPaged getLinks() {
         return links;
     }
@@ -40,7 +42,7 @@ public class ItemsListPaged  {
     * Get items
     * @return items
     **/
-    @JsonProperty("items")
+    @JsonbProperty("items")
     public List<ItemListEntry> getItems() {
         return items;
     }

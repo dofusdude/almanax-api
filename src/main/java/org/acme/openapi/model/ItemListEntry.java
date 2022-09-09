@@ -7,17 +7,19 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemListEntry  {
 
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private ItemsListEntryTypedType type;
     private Integer level;
 
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
 
     /**
@@ -44,7 +46,7 @@ public class ItemListEntry  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -65,7 +67,7 @@ public class ItemListEntry  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -86,7 +88,7 @@ public class ItemListEntry  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -107,7 +109,7 @@ public class ItemListEntry  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }

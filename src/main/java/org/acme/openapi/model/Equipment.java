@@ -13,44 +13,46 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Equipment  {
 
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
 
-    @JsonProperty("is_weapon")
+    @JsonbProperty("is_weapon")
     private Boolean isWeapon;
     private Integer level;
     private Integer pods;
 
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     private ImageUrls imageUrls;
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
 
     private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
 
-    @JsonProperty("has_parent_set")
+    @JsonbProperty("has_parent_set")
     private Boolean hasParentSet;
 
-    @JsonProperty("parent_set")
+    @JsonbProperty("parent_set")
     private EquipmentParentSet parentSet;
 
     /**
     * Get ankamaId
     * @return ankamaId
     **/
-    @JsonProperty("ankama_id")
+    @JsonbProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -71,7 +73,7 @@ public class Equipment  {
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -92,7 +94,7 @@ public class Equipment  {
     * Get description
     * @return description
     **/
-    @JsonProperty("description")
+    @JsonbProperty("description")
     public String getDescription() {
         return description;
     }
@@ -113,7 +115,7 @@ public class Equipment  {
     * Get type
     * @return type
     **/
-    @JsonProperty("type")
+    @JsonbProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -134,7 +136,7 @@ public class Equipment  {
     * Get isWeapon
     * @return isWeapon
     **/
-    @JsonProperty("is_weapon")
+    @JsonbProperty("is_weapon")
     public Boolean getIsWeapon() {
         return isWeapon;
     }
@@ -155,7 +157,7 @@ public class Equipment  {
     * Get level
     * @return level
     **/
-    @JsonProperty("level")
+    @JsonbProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -176,7 +178,7 @@ public class Equipment  {
     * Get pods
     * @return pods
     **/
-    @JsonProperty("pods")
+    @JsonbProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -197,7 +199,7 @@ public class Equipment  {
     * Get imageUrls
     * @return imageUrls
     **/
-    @JsonProperty("image_urls")
+    @JsonbProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -218,7 +220,7 @@ public class Equipment  {
     * Get hasEffects
     * @return hasEffects
     **/
-    @JsonProperty("has_effects")
+    @JsonbProperty("has_effects")
     public Boolean getHasEffects() {
         return hasEffects;
     }
@@ -239,7 +241,7 @@ public class Equipment  {
     * Get effects
     * @return effects
     **/
-    @JsonProperty("effects")
+    @JsonbProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -264,7 +266,7 @@ public class Equipment  {
     * Get hasConditions
     * @return hasConditions
     **/
-    @JsonProperty("has_conditions")
+    @JsonbProperty("has_conditions")
     public Boolean getHasConditions() {
         return hasConditions;
     }
@@ -285,7 +287,7 @@ public class Equipment  {
     * Get conditions
     * @return conditions
     **/
-    @JsonProperty("conditions")
+    @JsonbProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -310,7 +312,7 @@ public class Equipment  {
     * Get hasRecipe
     * @return hasRecipe
     **/
-    @JsonProperty("has_recipe")
+    @JsonbProperty("has_recipe")
     public Boolean getHasRecipe() {
         return hasRecipe;
     }
@@ -331,7 +333,7 @@ public class Equipment  {
     * Get recipe
     * @return recipe
     **/
-    @JsonProperty("recipe")
+    @JsonbProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }
@@ -356,7 +358,7 @@ public class Equipment  {
     * Get hasParentSet
     * @return hasParentSet
     **/
-    @JsonProperty("has_parent_set")
+    @JsonbProperty("has_parent_set")
     public Boolean getHasParentSet() {
         return hasParentSet;
     }
@@ -377,7 +379,7 @@ public class Equipment  {
     * Get parentSet
     * @return parentSet
     **/
-    @JsonProperty("parent_set")
+    @JsonbProperty("parent_set")
     public EquipmentParentSet getParentSet() {
         return parentSet;
     }

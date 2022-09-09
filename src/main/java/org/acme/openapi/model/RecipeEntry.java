@@ -5,14 +5,16 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeEntry  {
 
 
-    @JsonProperty("item_ankama_id")
+    @JsonbProperty("item_ankama_id")
     private Integer itemAnkamaId;
 
-    @JsonProperty("item_subtype")
+    @JsonbProperty("item_subtype")
     private String itemSubtype;
     private Integer quantity;
 
@@ -40,7 +42,7 @@ public class RecipeEntry  {
     * Get itemSubtype
     * @return itemSubtype
     **/
-    @JsonProperty("item_subtype")
+    @JsonbProperty("item_subtype")
     public String getItemSubtype() {
         return itemSubtype;
     }
@@ -61,7 +63,7 @@ public class RecipeEntry  {
     * Get quantity
     * @return quantity
     **/
-    @JsonProperty("quantity")
+    @JsonbProperty("quantity")
     public Integer getQuantity() {
         return quantity;
     }

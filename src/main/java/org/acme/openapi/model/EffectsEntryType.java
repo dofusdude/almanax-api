@@ -5,20 +5,22 @@ import java.lang.reflect.Type;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.json.bind.annotation.JsonbProperty;
+
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EffectsEntryType  {
 
     private String name;
     private Integer id;
 
-    @JsonProperty("is_meta")
+    @JsonbProperty("is_meta")
     private Boolean isMeta;
 
     /**
     * Get name
     * @return name
     **/
-    @JsonProperty("name")
+    @JsonbProperty("name")
     public String getName() {
         return name;
     }
@@ -39,7 +41,7 @@ public class EffectsEntryType  {
     * Get id
     * @return id
     **/
-    @JsonProperty("id")
+    @JsonbProperty("id")
     public Integer getId() {
         return id;
     }
@@ -60,7 +62,7 @@ public class EffectsEntryType  {
     * true if a type is generated from the Api instead of Ankama. In that case, always prefer showing the templated string and omit everything else. The \"name\" field will have an english description of the meta type. An example for such effects are class sets effects.
     * @return isMeta
     **/
-    @JsonProperty("is_meta")
+    @JsonbProperty("is_meta")
     public Boolean getIsMeta() {
         return isMeta;
     }
