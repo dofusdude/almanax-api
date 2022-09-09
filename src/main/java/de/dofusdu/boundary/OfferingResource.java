@@ -111,9 +111,6 @@ public class OfferingResource {
 
     @Tag(name = "API Meta")
     @Operation(summary = "All available bonuses in English.")
-    @Parameters({
-            @Parameter(name = "language", in = ParameterIn.PATH, example = "en", description = "Language as code of length 2.")
-    })
     @APIResponses({
             @APIResponse(
                     responseCode = "200",
