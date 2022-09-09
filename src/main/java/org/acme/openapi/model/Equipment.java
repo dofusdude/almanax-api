@@ -1,35 +1,56 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.ConditionEntry;
+import org.acme.openapi.model.EffectsEntry;
+import org.acme.openapi.model.EquipmentParentSet;
+import org.acme.openapi.model.ImageUrls;
+import org.acme.openapi.model.ItemsListEntryTypedType;
+import org.acme.openapi.model.RecipeEntry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Equipment  {
 
-
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
 
-    @JsonbProperty("is_weapon")
+    @JsonProperty("is_weapon")
     private Boolean isWeapon;
     private Integer level;
     private Integer pods;
 
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
+    @JsonProperty("has_effects")
+
+    private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
+    @JsonProperty("has_conditions")
+    private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
+    @JsonProperty("has_recipe")
+    private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
+
+    @JsonProperty("has_parent_set")
+    private Boolean hasParentSet;
+
+    @JsonProperty("parent_set")
+    private EquipmentParentSet parentSet;
 
     /**
     * Get ankamaId
     * @return ankamaId
     **/
+    @JsonProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -50,7 +71,7 @@ public class Equipment  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -71,7 +92,7 @@ public class Equipment  {
     * Get description
     * @return description
     **/
-    @JsonbProperty("description")
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
@@ -92,7 +113,7 @@ public class Equipment  {
     * Get type
     * @return type
     **/
-    @JsonbProperty("type")
+    @JsonProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -113,6 +134,7 @@ public class Equipment  {
     * Get isWeapon
     * @return isWeapon
     **/
+    @JsonProperty("is_weapon")
     public Boolean getIsWeapon() {
         return isWeapon;
     }
@@ -133,7 +155,7 @@ public class Equipment  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -154,7 +176,7 @@ public class Equipment  {
     * Get pods
     * @return pods
     **/
-    @JsonbProperty("pods")
+    @JsonProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -175,6 +197,7 @@ public class Equipment  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -192,10 +215,31 @@ public class Equipment  {
     }
 
     /**
+    * Get hasEffects
+    * @return hasEffects
+    **/
+    @JsonProperty("has_effects")
+    public Boolean getHasEffects() {
+        return hasEffects;
+    }
+
+    /**
+     * Set hasEffects
+     **/
+    public void setHasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+    }
+
+    public Equipment hasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+        return this;
+    }
+
+    /**
     * Get effects
     * @return effects
     **/
-    @JsonbProperty("effects")
+    @JsonProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -217,10 +261,31 @@ public class Equipment  {
     }
 
     /**
+    * Get hasConditions
+    * @return hasConditions
+    **/
+    @JsonProperty("has_conditions")
+    public Boolean getHasConditions() {
+        return hasConditions;
+    }
+
+    /**
+     * Set hasConditions
+     **/
+    public void setHasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+    }
+
+    public Equipment hasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+        return this;
+    }
+
+    /**
     * Get conditions
     * @return conditions
     **/
-    @JsonbProperty("conditions")
+    @JsonProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -242,10 +307,31 @@ public class Equipment  {
     }
 
     /**
+    * Get hasRecipe
+    * @return hasRecipe
+    **/
+    @JsonProperty("has_recipe")
+    public Boolean getHasRecipe() {
+        return hasRecipe;
+    }
+
+    /**
+     * Set hasRecipe
+     **/
+    public void setHasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
+    }
+
+    public Equipment hasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
+        return this;
+    }
+
+    /**
     * Get recipe
     * @return recipe
     **/
-    @JsonbProperty("recipe")
+    @JsonProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }
@@ -267,6 +353,48 @@ public class Equipment  {
     }
 
     /**
+    * Get hasParentSet
+    * @return hasParentSet
+    **/
+    @JsonProperty("has_parent_set")
+    public Boolean getHasParentSet() {
+        return hasParentSet;
+    }
+
+    /**
+     * Set hasParentSet
+     **/
+    public void setHasParentSet(Boolean hasParentSet) {
+        this.hasParentSet = hasParentSet;
+    }
+
+    public Equipment hasParentSet(Boolean hasParentSet) {
+        this.hasParentSet = hasParentSet;
+        return this;
+    }
+
+    /**
+    * Get parentSet
+    * @return parentSet
+    **/
+    @JsonProperty("parent_set")
+    public EquipmentParentSet getParentSet() {
+        return parentSet;
+    }
+
+    /**
+     * Set parentSet
+     **/
+    public void setParentSet(EquipmentParentSet parentSet) {
+        this.parentSet = parentSet;
+    }
+
+    public Equipment parentSet(EquipmentParentSet parentSet) {
+        this.parentSet = parentSet;
+        return this;
+    }
+
+    /**
      * Create a string representation of this pojo.
      **/
     @Override
@@ -282,9 +410,14 @@ public class Equipment  {
         sb.append("    level: ").append(toIndentedString(level)).append("\n");
         sb.append("    pods: ").append(toIndentedString(pods)).append("\n");
         sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
+        sb.append("    hasEffects: ").append(toIndentedString(hasEffects)).append("\n");
         sb.append("    effects: ").append(toIndentedString(effects)).append("\n");
+        sb.append("    hasConditions: ").append(toIndentedString(hasConditions)).append("\n");
         sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
+        sb.append("    hasRecipe: ").append(toIndentedString(hasRecipe)).append("\n");
         sb.append("    recipe: ").append(toIndentedString(recipe)).append("\n");
+        sb.append("    hasParentSet: ").append(toIndentedString(hasParentSet)).append("\n");
+        sb.append("    parentSet: ").append(toIndentedString(parentSet)).append("\n");
         sb.append("}");
         return sb.toString();
     }

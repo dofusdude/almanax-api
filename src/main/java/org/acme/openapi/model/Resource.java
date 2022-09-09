@@ -1,32 +1,44 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.ConditionEntry;
+import org.acme.openapi.model.EffectsEntry;
+import org.acme.openapi.model.ImageUrls;
+import org.acme.openapi.model.ItemsListEntryTypedType;
+import org.acme.openapi.model.RecipeEntry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Resource  {
 
-
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
     private Integer level;
     private Integer pods;
-
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
+    @JsonProperty("has_effects")
+    private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
+    @JsonProperty("has_conditions")
+    private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
+    @JsonProperty("has_recipe")
+    private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
 
     /**
     * Get ankamaId
     * @return ankamaId
     **/
+    @JsonProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -47,7 +59,7 @@ public class Resource  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -68,7 +80,7 @@ public class Resource  {
     * Get description
     * @return description
     **/
-    @JsonbProperty("description")
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
@@ -89,7 +101,7 @@ public class Resource  {
     * Get type
     * @return type
     **/
-    @JsonbProperty("type")
+    @JsonProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -110,7 +122,7 @@ public class Resource  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -131,7 +143,7 @@ public class Resource  {
     * Get pods
     * @return pods
     **/
-    @JsonbProperty("pods")
+    @JsonProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -152,6 +164,7 @@ public class Resource  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -169,10 +182,31 @@ public class Resource  {
     }
 
     /**
+    * Get hasEffects
+    * @return hasEffects
+    **/
+    @JsonProperty("has_effects")
+    public Boolean getHasEffects() {
+        return hasEffects;
+    }
+
+    /**
+     * Set hasEffects
+     **/
+    public void setHasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+    }
+
+    public Resource hasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+        return this;
+    }
+
+    /**
     * Get effects
     * @return effects
     **/
-    @JsonbProperty("effects")
+    @JsonProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -194,10 +228,31 @@ public class Resource  {
     }
 
     /**
+    * Get hasConditions
+    * @return hasConditions
+    **/
+    @JsonProperty("has_conditions")
+    public Boolean getHasConditions() {
+        return hasConditions;
+    }
+
+    /**
+     * Set hasConditions
+     **/
+    public void setHasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+    }
+
+    public Resource hasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+        return this;
+    }
+
+    /**
     * Get conditions
     * @return conditions
     **/
-    @JsonbProperty("conditions")
+    @JsonProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -219,10 +274,31 @@ public class Resource  {
     }
 
     /**
+    * Get hasRecipe
+    * @return hasRecipe
+    **/
+    @JsonProperty("has_recipe")
+    public Boolean getHasRecipe() {
+        return hasRecipe;
+    }
+
+    /**
+     * Set hasRecipe
+     **/
+    public void setHasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
+    }
+
+    public Resource hasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
+        return this;
+    }
+
+    /**
     * Get recipe
     * @return recipe
     **/
-    @JsonbProperty("recipe")
+    @JsonProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }
@@ -258,8 +334,11 @@ public class Resource  {
         sb.append("    level: ").append(toIndentedString(level)).append("\n");
         sb.append("    pods: ").append(toIndentedString(pods)).append("\n");
         sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
+        sb.append("    hasEffects: ").append(toIndentedString(hasEffects)).append("\n");
         sb.append("    effects: ").append(toIndentedString(effects)).append("\n");
+        sb.append("    hasConditions: ").append(toIndentedString(hasConditions)).append("\n");
         sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
+        sb.append("    hasRecipe: ").append(toIndentedString(hasRecipe)).append("\n");
         sb.append("    recipe: ").append(toIndentedString(recipe)).append("\n");
         sb.append("}");
         return sb.toString();

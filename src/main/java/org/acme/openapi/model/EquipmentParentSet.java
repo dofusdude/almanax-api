@@ -6,9 +6,31 @@ import java.lang.reflect.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class ItemsListEntryTypedType  {
+public class EquipmentParentSet  {
 
+    private Integer id;
     private String name;
+
+    /**
+    * Get id
+    * @return id
+    **/
+    @JsonProperty("id")
+    public Integer getId() {
+        return id;
+    }
+
+    /**
+     * Set id
+     **/
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public EquipmentParentSet id(Integer id) {
+        this.id = id;
+        return this;
+    }
 
     /**
     * Get name
@@ -26,7 +48,7 @@ public class ItemsListEntryTypedType  {
         this.name = name;
     }
 
-    public ItemsListEntryTypedType name(String name) {
+    public EquipmentParentSet name(String name) {
         this.name = name;
         return this;
     }
@@ -37,8 +59,9 @@ public class ItemsListEntryTypedType  {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("class ItemsListEntryTypedType {\n");
+        sb.append("class EquipmentParentSet {\n");
 
+        sb.append("    id: ").append(toIndentedString(id)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("}");
         return sb.toString();

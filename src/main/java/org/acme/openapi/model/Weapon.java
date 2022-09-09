@@ -1,49 +1,64 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.ConditionEntry;
+import org.acme.openapi.model.EffectsEntry;
+import org.acme.openapi.model.EquipmentParentSet;
+import org.acme.openapi.model.ImageUrls;
+import org.acme.openapi.model.ItemsListEntryTypedType;
+import org.acme.openapi.model.RecipeEntry;
+import org.acme.openapi.model.WeaponRange;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Weapon  {
 
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private String description;
     private ItemsListEntryTypedType type;
 
-    @JsonbProperty("is_weapon")
+    @JsonProperty("is_weapon")
     private Boolean isWeapon;
     private Integer level;
     private Integer pods;
-
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
+    @JsonProperty("has_effects")
+    private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
+    @JsonProperty("has_conditions")
+    private Boolean hasConditions;
     private List<ConditionEntry> conditions = null;
-
-    @JsonbProperty("critical_hit_probability")
+    @JsonProperty("critical_hit_probability")
     private Integer criticalHitProbability;
-
-    @JsonbProperty("critical_hit_bonus")
+    @JsonProperty("critical_hit_bonus")
     private Integer criticalHitBonus;
-
-    @JsonbProperty("is_two_handed")
+    @JsonProperty("is_two_handed")
     private Boolean isTwoHanded;
-
-    @JsonbProperty("max_cast_per_turn")
+    @JsonProperty("max_cast_per_turn")
     private Integer maxCastPerTurn;
-    @JsonbProperty("ap_cost")
+    @JsonProperty("ap_cost")
     private Integer apCost;
-    private Integer range;
+    private WeaponRange range;
+    @JsonProperty("has_recipe")
+    private Boolean hasRecipe;
     private List<RecipeEntry> recipe = null;
+    @JsonProperty("has_parent_set")
+    private Boolean hasParentSet;
+    @JsonProperty("parent_set")
+    private EquipmentParentSet parentSet;
 
     /**
     * Get ankamaId
     * @return ankamaId
     **/
+    @JsonProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -64,7 +79,7 @@ public class Weapon  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -85,7 +100,7 @@ public class Weapon  {
     * Get description
     * @return description
     **/
-    @JsonbProperty("description")
+    @JsonProperty("description")
     public String getDescription() {
         return description;
     }
@@ -106,7 +121,7 @@ public class Weapon  {
     * Get type
     * @return type
     **/
-    @JsonbProperty("type")
+    @JsonProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -127,6 +142,7 @@ public class Weapon  {
     * always true when the item is a weapon. Many fields are now available. Always check for this flag first when getting single equipment items.
     * @return isWeapon
     **/
+    @JsonProperty("is_weapon")
     public Boolean getIsWeapon() {
         return isWeapon;
     }
@@ -147,7 +163,7 @@ public class Weapon  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -168,7 +184,7 @@ public class Weapon  {
     * Get pods
     * @return pods
     **/
-    @JsonbProperty("pods")
+    @JsonProperty("pods")
     public Integer getPods() {
         return pods;
     }
@@ -189,6 +205,7 @@ public class Weapon  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -206,10 +223,31 @@ public class Weapon  {
     }
 
     /**
+    * Get hasEffects
+    * @return hasEffects
+    **/
+    @JsonProperty("has_effects")
+    public Boolean getHasEffects() {
+        return hasEffects;
+    }
+
+    /**
+     * Set hasEffects
+     **/
+    public void setHasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+    }
+
+    public Weapon hasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+        return this;
+    }
+
+    /**
     * Get effects
     * @return effects
     **/
-    @JsonbProperty("effects")
+    @JsonProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -231,10 +269,31 @@ public class Weapon  {
     }
 
     /**
+    * Get hasConditions
+    * @return hasConditions
+    **/
+    @JsonProperty("has_conditions")
+    public Boolean getHasConditions() {
+        return hasConditions;
+    }
+
+    /**
+     * Set hasConditions
+     **/
+    public void setHasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+    }
+
+    public Weapon hasConditions(Boolean hasConditions) {
+        this.hasConditions = hasConditions;
+        return this;
+    }
+
+    /**
     * Get conditions
     * @return conditions
     **/
-    @JsonbProperty("conditions")
+    @JsonProperty("conditions")
     public List<ConditionEntry> getConditions() {
         return conditions;
     }
@@ -259,6 +318,7 @@ public class Weapon  {
     * Get criticalHitProbability
     * @return criticalHitProbability
     **/
+    @JsonProperty("critical_hit_probability")
     public Integer getCriticalHitProbability() {
         return criticalHitProbability;
     }
@@ -279,6 +339,7 @@ public class Weapon  {
     * Get criticalHitBonus
     * @return criticalHitBonus
     **/
+    @JsonProperty("critical_hit_bonus")
     public Integer getCriticalHitBonus() {
         return criticalHitBonus;
     }
@@ -299,7 +360,7 @@ public class Weapon  {
     * Get isTwoHanded
     * @return isTwoHanded
     **/
-    @JsonbProperty("is_two_handed")
+    @JsonProperty("is_two_handed")
     public Boolean getIsTwoHanded() {
         return isTwoHanded;
     }
@@ -320,7 +381,7 @@ public class Weapon  {
     * Get maxCastPerTurn
     * @return maxCastPerTurn
     **/
-    @JsonbProperty("max_cast_per_turn")
+    @JsonProperty("max_cast_per_turn")
     public Integer getMaxCastPerTurn() {
         return maxCastPerTurn;
     }
@@ -341,7 +402,7 @@ public class Weapon  {
     * Get apCost
     * @return apCost
     **/
-    @JsonbProperty("ap_cost")
+    @JsonProperty("ap_cost")
     public Integer getApCost() {
         return apCost;
     }
@@ -362,20 +423,41 @@ public class Weapon  {
     * Get range
     * @return range
     **/
-    @JsonbProperty("range")
-    public Integer getRange() {
+    @JsonProperty("range")
+    public WeaponRange getRange() {
         return range;
     }
 
     /**
      * Set range
      **/
-    public void setRange(Integer range) {
+    public void setRange(WeaponRange range) {
         this.range = range;
     }
 
-    public Weapon range(Integer range) {
+    public Weapon range(WeaponRange range) {
         this.range = range;
+        return this;
+    }
+
+    /**
+    * Get hasRecipe
+    * @return hasRecipe
+    **/
+    @JsonProperty("has_recipe")
+    public Boolean getHasRecipe() {
+        return hasRecipe;
+    }
+
+    /**
+     * Set hasRecipe
+     **/
+    public void setHasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
+    }
+
+    public Weapon hasRecipe(Boolean hasRecipe) {
+        this.hasRecipe = hasRecipe;
         return this;
     }
 
@@ -383,7 +465,7 @@ public class Weapon  {
     * Get recipe
     * @return recipe
     **/
-    @JsonbProperty("recipe")
+    @JsonProperty("recipe")
     public List<RecipeEntry> getRecipe() {
         return recipe;
     }
@@ -405,6 +487,48 @@ public class Weapon  {
     }
 
     /**
+    * Get hasParentSet
+    * @return hasParentSet
+    **/
+    @JsonProperty("has_parent_set")
+    public Boolean getHasParentSet() {
+        return hasParentSet;
+    }
+
+    /**
+     * Set hasParentSet
+     **/
+    public void setHasParentSet(Boolean hasParentSet) {
+        this.hasParentSet = hasParentSet;
+    }
+
+    public Weapon hasParentSet(Boolean hasParentSet) {
+        this.hasParentSet = hasParentSet;
+        return this;
+    }
+
+    /**
+    * Get parentSet
+    * @return parentSet
+    **/
+    @JsonProperty("parent_set")
+    public EquipmentParentSet getParentSet() {
+        return parentSet;
+    }
+
+    /**
+     * Set parentSet
+     **/
+    public void setParentSet(EquipmentParentSet parentSet) {
+        this.parentSet = parentSet;
+    }
+
+    public Weapon parentSet(EquipmentParentSet parentSet) {
+        this.parentSet = parentSet;
+        return this;
+    }
+
+    /**
      * Create a string representation of this pojo.
      **/
     @Override
@@ -420,7 +544,9 @@ public class Weapon  {
         sb.append("    level: ").append(toIndentedString(level)).append("\n");
         sb.append("    pods: ").append(toIndentedString(pods)).append("\n");
         sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
+        sb.append("    hasEffects: ").append(toIndentedString(hasEffects)).append("\n");
         sb.append("    effects: ").append(toIndentedString(effects)).append("\n");
+        sb.append("    hasConditions: ").append(toIndentedString(hasConditions)).append("\n");
         sb.append("    conditions: ").append(toIndentedString(conditions)).append("\n");
         sb.append("    criticalHitProbability: ").append(toIndentedString(criticalHitProbability)).append("\n");
         sb.append("    criticalHitBonus: ").append(toIndentedString(criticalHitBonus)).append("\n");
@@ -428,7 +554,10 @@ public class Weapon  {
         sb.append("    maxCastPerTurn: ").append(toIndentedString(maxCastPerTurn)).append("\n");
         sb.append("    apCost: ").append(toIndentedString(apCost)).append("\n");
         sb.append("    range: ").append(toIndentedString(range)).append("\n");
+        sb.append("    hasRecipe: ").append(toIndentedString(hasRecipe)).append("\n");
         sb.append("    recipe: ").append(toIndentedString(recipe)).append("\n");
+        sb.append("    hasParentSet: ").append(toIndentedString(hasParentSet)).append("\n");
+        sb.append("    parentSet: ").append(toIndentedString(parentSet)).append("\n");
         sb.append("}");
         return sb.toString();
     }

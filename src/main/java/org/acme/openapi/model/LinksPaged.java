@@ -1,8 +1,9 @@
 package org.acme.openapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class LinksPaged  {
@@ -16,7 +17,7 @@ public class LinksPaged  {
     * Get first
     * @return first
     **/
-    @JsonbProperty("first")
+    @JsonProperty("first")
     public String getFirst() {
         return first;
     }
@@ -37,7 +38,7 @@ public class LinksPaged  {
     * Get prev
     * @return prev
     **/
-    @JsonbProperty("prev")
+    @JsonProperty("prev")
     public String getPrev() {
         return prev;
     }
@@ -58,7 +59,7 @@ public class LinksPaged  {
     * Get next
     * @return next
     **/
-    @JsonbProperty("next")
+    @JsonProperty("next")
     public String getNext() {
         return next;
     }
@@ -79,7 +80,7 @@ public class LinksPaged  {
     * Get last
     * @return last
     **/
-    @JsonbProperty("last")
+    @JsonProperty("last")
     public String getLast() {
         return last;
     }

@@ -1,24 +1,24 @@
 package org.acme.openapi.model;
 
-import javax.json.bind.annotation.JsonbProperty;
+import org.acme.openapi.model.EffectsEntryType;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 public class ConditionEntry  {
 
-
-    @JsonbProperty("operator")
     private String operator;
-
-    @JsonbProperty("int_value")
+    @JsonProperty("int_value")
     private Integer intValue;
-
-    @JsonbProperty("element")
-    private ItemsListEntryTypedType element;
+    private EffectsEntryType element;
 
     /**
     * Get operator
     * @return operator
     **/
+    @JsonProperty("operator")
     public String getOperator() {
         return operator;
     }
@@ -59,18 +59,19 @@ public class ConditionEntry  {
     * Get element
     * @return element
     **/
-    public ItemsListEntryTypedType getElement() {
+    @JsonProperty("element")
+    public EffectsEntryType getElement() {
         return element;
     }
 
     /**
      * Set element
      **/
-    public void setElement(ItemsListEntryTypedType element) {
+    public void setElement(EffectsEntryType element) {
         this.element = element;
     }
 
-    public ConditionEntry element(ItemsListEntryTypedType element) {
+    public ConditionEntry element(EffectsEntryType element) {
         this.element = element;
         return this;
     }

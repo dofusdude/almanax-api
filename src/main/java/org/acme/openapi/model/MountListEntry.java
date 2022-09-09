@@ -1,21 +1,23 @@
 package org.acme.openapi.model;
 
+import org.acme.openapi.model.ImageUrls;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MountListEntry  {
 
 
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
 
-    @JsonbProperty("family_name")
+    @JsonProperty("family_namye")
     private String familyName;
 
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
 
     /**
@@ -42,7 +44,7 @@ public class MountListEntry  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -63,6 +65,7 @@ public class MountListEntry  {
     * Get familyName
     * @return familyName
     **/
+    @JsonProperty("family_name")
     public String getFamilyName() {
         return familyName;
     }
@@ -83,6 +86,7 @@ public class MountListEntry  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }

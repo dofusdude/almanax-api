@@ -1,14 +1,14 @@
 package org.acme.openapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SetListEntry  {
 
-
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private Integer items;
@@ -18,6 +18,7 @@ public class SetListEntry  {
     * Get ankamaId
     * @return ankamaId
     **/
+    @JsonProperty("ankama_id")
     public Integer getAnkamaId() {
         return ankamaId;
     }
@@ -38,7 +39,7 @@ public class SetListEntry  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -59,7 +60,7 @@ public class SetListEntry  {
     * amount
     * @return items
     **/
-    @JsonbProperty("items")
+    @JsonProperty("items")
     public Integer getItems() {
         return items;
     }
@@ -80,7 +81,7 @@ public class SetListEntry  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }

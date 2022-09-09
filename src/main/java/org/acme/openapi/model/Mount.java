@@ -1,23 +1,29 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.EffectsEntry;
+import org.acme.openapi.model.ImageUrls;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Mount  {
 
-
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
 
-    @JsonbProperty("family_name")
+    @JsonProperty("family_name")
     private String familyName;
 
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
+
+    @JsonProperty("has_effects")
+    private Boolean hasEffects;
     private List<EffectsEntry> effects = null;
 
     /**
@@ -44,7 +50,7 @@ public class Mount  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -85,6 +91,7 @@ public class Mount  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }
@@ -102,10 +109,31 @@ public class Mount  {
     }
 
     /**
+    * Get hasEffects
+    * @return hasEffects
+    **/
+    @JsonProperty("has_effects")
+    public Boolean getHasEffects() {
+        return hasEffects;
+    }
+
+    /**
+     * Set hasEffects
+     **/
+    public void setHasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+    }
+
+    public Mount hasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+        return this;
+    }
+
+    /**
     * Get effects
     * @return effects
     **/
-    @JsonbProperty("effects")
+    @JsonProperty("effects")
     public List<EffectsEntry> getEffects() {
         return effects;
     }
@@ -138,6 +166,7 @@ public class Mount  {
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    familyName: ").append(toIndentedString(familyName)).append("\n");
         sb.append("    imageUrls: ").append(toIndentedString(imageUrls)).append("\n");
+        sb.append("    hasEffects: ").append(toIndentedString(hasEffects)).append("\n");
         sb.append("    effects: ").append(toIndentedString(effects)).append("\n");
         sb.append("}");
         return sb.toString();

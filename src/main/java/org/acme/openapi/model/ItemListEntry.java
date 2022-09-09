@@ -1,20 +1,23 @@
 package org.acme.openapi.model;
 
+import org.acme.openapi.model.ImageUrls;
+import org.acme.openapi.model.ItemsListEntryTypedType;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ItemListEntry  {
 
 
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
     private ItemsListEntryTypedType type;
     private Integer level;
 
-    @JsonbProperty("image_urls")
+    @JsonProperty("image_urls")
     private ImageUrls imageUrls;
 
     /**
@@ -41,7 +44,7 @@ public class ItemListEntry  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -62,7 +65,7 @@ public class ItemListEntry  {
     * Get type
     * @return type
     **/
-    @JsonbProperty("type")
+    @JsonProperty("type")
     public ItemsListEntryTypedType getType() {
         return type;
     }
@@ -83,7 +86,7 @@ public class ItemListEntry  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -104,6 +107,7 @@ public class ItemListEntry  {
     * Get imageUrls
     * @return imageUrls
     **/
+    @JsonProperty("image_urls")
     public ImageUrls getImageUrls() {
         return imageUrls;
     }

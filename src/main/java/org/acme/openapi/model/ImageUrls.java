@@ -1,14 +1,14 @@
 package org.acme.openapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-
+@JsonIgnoreProperties(ignoreUnknown = true)
 /**
   * All images except icon are rendered in the background which can take some time (up to hours if all data is completely generated from scratch). Because of this, they can be null if they are not yet rendered.
  **/
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class ImageUrls  {
 
     /**
@@ -32,7 +32,7 @@ public class ImageUrls  {
     * 60x60 px, always available
     * @return icon
     **/
-    @JsonbProperty("icon")
+    @JsonProperty("icon")
     public String getIcon() {
         return icon;
     }
@@ -53,7 +53,7 @@ public class ImageUrls  {
     * 200x200 px
     * @return sd
     **/
-    @JsonbProperty("sd")
+    @JsonProperty("sd")
     public String getSd() {
         return sd;
     }
@@ -74,7 +74,7 @@ public class ImageUrls  {
     * 400x400 px
     * @return hq
     **/
-    @JsonbProperty("hq")
+    @JsonProperty("hq")
     public String getHq() {
         return hq;
     }
@@ -95,7 +95,7 @@ public class ImageUrls  {
     * 800x800 px
     * @return hd
     **/
-    @JsonbProperty("hd")
+    @JsonProperty("hd")
     public String getHd() {
         return hd;
     }

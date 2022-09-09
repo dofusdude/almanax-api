@@ -1,15 +1,19 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.LinksPaged;
+import org.acme.openapi.model.SetListEntry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class SetsListPaged  {
 
+    @JsonProperty("_links")
 
-    @JsonbProperty("_links")
     private LinksPaged links;
     private List<SetListEntry> items = null;
 
@@ -17,6 +21,7 @@ public class SetsListPaged  {
     * Get links
     * @return links
     **/
+    @JsonProperty("_links")
     public LinksPaged getLinks() {
         return links;
     }
@@ -37,7 +42,7 @@ public class SetsListPaged  {
     * Get items
     * @return items
     **/
-    @JsonbProperty("items")
+    @JsonProperty("items")
     public List<SetListEntry> getItems() {
         return items;
     }

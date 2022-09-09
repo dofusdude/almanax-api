@@ -1,20 +1,24 @@
 package org.acme.openapi.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import javax.json.bind.annotation.JsonbProperty;
+import java.util.ArrayList;
 import java.util.List;
+import org.acme.openapi.model.EffectsEntry;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
+
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EquipmentSet  {
 
-
-    @JsonbProperty("ankama_id")
+    @JsonProperty("ankama_id")
     private Integer ankamaId;
     private String name;
-
-    @JsonbProperty("equipment_ids")
+    @JsonProperty("equipment_ids")
     private List<Integer> equipmentIds = null;
+
+    @JsonProperty("has_effects")
+    private Boolean hasEffects;
     private List<List<EffectsEntry>> effects = null;
     private Integer level;
 
@@ -42,7 +46,7 @@ public class EquipmentSet  {
     * Get name
     * @return name
     **/
-    @JsonbProperty("name")
+    @JsonProperty("name")
     public String getName() {
         return name;
     }
@@ -63,6 +67,7 @@ public class EquipmentSet  {
     * Get equipmentIds
     * @return equipmentIds
     **/
+    @JsonProperty("equipment_ids")
     public List<Integer> getEquipmentIds() {
         return equipmentIds;
     }
@@ -84,10 +89,31 @@ public class EquipmentSet  {
     }
 
     /**
+    * Get hasEffects
+    * @return hasEffects
+    **/
+    @JsonProperty("has_effects")
+    public Boolean getHasEffects() {
+        return hasEffects;
+    }
+
+    /**
+     * Set hasEffects
+     **/
+    public void setHasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+    }
+
+    public EquipmentSet hasEffects(Boolean hasEffects) {
+        this.hasEffects = hasEffects;
+        return this;
+    }
+
+    /**
     * Get effects
     * @return effects
     **/
-    @JsonbProperty("effects")
+    @JsonProperty("effects")
     public List<List<EffectsEntry>> getEffects() {
         return effects;
     }
@@ -112,7 +138,7 @@ public class EquipmentSet  {
     * Get level
     * @return level
     **/
-    @JsonbProperty("level")
+    @JsonProperty("level")
     public Integer getLevel() {
         return level;
     }
@@ -140,6 +166,7 @@ public class EquipmentSet  {
         sb.append("    ankamaId: ").append(toIndentedString(ankamaId)).append("\n");
         sb.append("    name: ").append(toIndentedString(name)).append("\n");
         sb.append("    equipmentIds: ").append(toIndentedString(equipmentIds)).append("\n");
+        sb.append("    hasEffects: ").append(toIndentedString(hasEffects)).append("\n");
         sb.append("    effects: ").append(toIndentedString(effects)).append("\n");
         sb.append("    level: ").append(toIndentedString(level)).append("\n");
         sb.append("}");

@@ -1,17 +1,18 @@
 package org.acme.openapi.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import java.lang.reflect.Type;
 
-import javax.json.bind.annotation.JsonbProperty;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class RecipeEntry  {
 
-    @JsonbProperty("item_ankama_id")
+
+    @JsonProperty("item_ankama_id")
     private Integer itemAnkamaId;
 
-
-    @JsonbProperty("item_subtype")
+    @JsonProperty("item_subtype")
     private String itemSubtype;
     private Integer quantity;
 
@@ -19,7 +20,6 @@ public class RecipeEntry  {
     * Get itemAnkamaId
     * @return itemAnkamaId
     **/
-
     public Integer getItemAnkamaId() {
         return itemAnkamaId;
     }
@@ -40,6 +40,7 @@ public class RecipeEntry  {
     * Get itemSubtype
     * @return itemSubtype
     **/
+    @JsonProperty("item_subtype")
     public String getItemSubtype() {
         return itemSubtype;
     }
@@ -60,7 +61,7 @@ public class RecipeEntry  {
     * Get quantity
     * @return quantity
     **/
-    @JsonbProperty("quantity")
+    @JsonProperty("quantity")
     public Integer getQuantity() {
         return quantity;
     }
