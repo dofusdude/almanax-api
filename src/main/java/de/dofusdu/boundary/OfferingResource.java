@@ -702,11 +702,11 @@ public class OfferingResource {
         List<ItemPositionDTO> items = new ArrayList<>();
         offerings.forEach(el -> {
             // already in map
-            if (itemMap.containsKey(el.itemName)) {
-                itemMap.replace(el.itemName, itemMap.get(el.itemName) + el.itemQuantity);
+            if (itemMap.containsKey(el.itemObject.name)) {
+                itemMap.replace(el.itemObject.name, itemMap.get(el.itemObject.name) + el.itemQuantity);
             } else {
                 // new in map
-                itemMap.put(el.itemName, el.itemQuantity);
+                itemMap.put(el.itemObject.name, el.itemQuantity);
             }
         });
 
