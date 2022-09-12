@@ -93,7 +93,7 @@ public class OfferingResourceV2 {
      * ######################## API META ########################
      **/
     @GET
-    @Path("{language}/almanax/bonuses")
+    @Path("meta/{language}/almanax/bonuses")
     @Transactional(Transactional.TxType.REQUIRES_NEW)
     public Response bonusTypes(@PathParam("language") String language) {
         if (!LanguageHelper.validLanguage(language)) {
