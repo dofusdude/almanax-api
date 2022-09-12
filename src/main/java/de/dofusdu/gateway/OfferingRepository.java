@@ -265,11 +265,6 @@ public class OfferingRepository {
         }
 
         Optional<Offering> offeringLastYear = singleFromDate(date.minusYears(1));
-        if (offeringLastYear.isEmpty()) {
-            res.isRegular = false;
-        } else {
-            res.isRegular = offering.get().isSameByContent(offeringLastYear.get(), language);
-        }
 
         return Optional.of(res);
     }
@@ -398,30 +393,12 @@ public class OfferingRepository {
 
     @Transactional
     public List<OfferingDTOV2> listFromDateRangeDTOV2(LocalDate startDate, LocalDate endDate, String language) {
-        return listFromDateRange(startDate, endDate).stream().map(offering -> {
-            OfferingDTOV2 from = OfferingDTOV2.from(offering, language, encObjectSwitch.getV2(offering.getItem().getUrl(), language));
-            Optional<Offering> offeringLastYear = singleFromDate(DateConverter.toLocalDate(offering.getDate()).minusYears(1));
-            if (offeringLastYear.isEmpty()) {
-                from.isRegular = false;
-            } else {
-                from.isRegular = offering.isSameByContent(offeringLastYear.get(), language);
-            }
-            return from;
-        }).collect(Collectors.toList());
+        return listFromDateRange(startDate, endDate).stream().map(offering -> OfferingDTOV2.from(offering, language, encObjectSwitch.getV2(offering.getItem().getUrl(), language))).collect(Collectors.toList());
     }
 
     @Transactional
     public List<OfferingDTOV2> listFromDateRangeWithBonusDTOV2(LocalDate startDate, LocalDate endDate, String bonusType, String language) {
-        return listFromDateRangeWithBonus(startDate, endDate, bonusType).stream().map(offering -> {
-            OfferingDTOV2 from = OfferingDTOV2.from(offering, language, encObjectSwitch.getV2(offering.getItem().getUrl(), language));
-            Optional<Offering> offeringLastYear = singleFromDate(DateConverter.toLocalDate(offering.getDate()).minusYears(1));
-            if (offeringLastYear.isEmpty()) {
-                from.isRegular = false;
-            } else {
-                from.isRegular = offering.isSameByContent(offeringLastYear.get(), language);
-            }
-            return from;
-        }).collect(Collectors.toList());
+        return listFromDateRangeWithBonus(startDate, endDate, bonusType).stream().map(offering -> OfferingDTOV2.from(offering, language, encObjectSwitch.getV2(offering.getItem().getUrl(), language))).collect(Collectors.toList());
     }
     @Transactional
     public List<OfferingDTO> listFromDateRangeWithBonusDTO(LocalDate startDate, LocalDate endDate, String bonusType, String language) {

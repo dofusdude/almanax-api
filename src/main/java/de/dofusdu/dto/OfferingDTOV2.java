@@ -30,9 +30,6 @@ public class OfferingDTOV2 {
     @JsonbProperty("tribute")
     public TributeDTOV2 tribute;
 
-    @JsonbProperty("is_regular")
-    public Boolean isRegular;
-
     public OfferingDTOV2() {
     }
 
@@ -44,7 +41,6 @@ public class OfferingDTOV2 {
         offeringDTO.date = DateConverter.toLocalDate(offering.getDate()).toString();
         offeringDTO.bonus = BonusDTOV2.from(offering.getBonus(), language);
         offeringDTO.tribute = TributeDTOV2.from(offering, itemObject);
-        offeringDTO.isRegular = false; // set from outside
         return offeringDTO;
     }
 
