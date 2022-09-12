@@ -16,6 +16,8 @@
 
 package de.dofusdu.clients;
 
+import de.dofusdu.dto.ItemDTOV2;
+import de.dofusdu.dto.ItemObjectDTO;
 import org.acme.openapi.api.AllItemsApi;
 import org.acme.openapi.api.ConsumablesApi;
 import org.acme.openapi.api.EquipmentApi;
@@ -24,13 +26,11 @@ import org.acme.openapi.model.Resource;
 import org.acme.openapi.model.Weapon;
 import org.eclipse.microprofile.rest.client.inject.RestClient;
 
-import de.dofusdu.dto.ItemObjectDTO;
-
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.ws.rs.NotFoundException;
 
-@RequestScoped
+@ApplicationScoped
 public class EncObjectSwitch {
 
     @Inject
@@ -87,6 +87,33 @@ public class EncObjectSwitch {
             itemObject.ankamaUrl = ankamaEnGeneral;
             itemObject.imageUrlLocal = itemObject.imageUrl;
             itemObject.itemUrl = url;
+        }
+
+        if (itemObject == null) {
+            throw new NotFoundException();
+        }
+
+        return itemObject;
+    }
+
+    public ItemDTOV2 getV2(String url, String language) {
+        ItemDTOV2 itemObject = null;
+        String[] split = url.split("/");
+        Integer ankamaId = Integer.parseInt(split[split.length - 1].trim());
+
+        if (url.contains("resources")) {
+            Resource resource = resourcesApi.getItemsResourcesSingle(language, ankamaId);
+            itemObject = new ItemDTOV2(resource.getAnkamaId(), "resources", resource.getName(), resource.getImageUrls());
+        }
+
+        if (url.contains("consumables")) {
+            Resource resource = consumablesApi.getItemsConsumablesSingle(language, ankamaId);
+            itemObject = new ItemDTOV2(resource.getAnkamaId(), "consumables", resource.getName(), resource.getImageUrls());
+        }
+
+        if (url.contains("equipment") || url.contains("weapons") || url.contains("pets")) {
+            Weapon weapon = equipmentApi.getItemsEquipmentSingle(language, ankamaId);
+            itemObject = new ItemDTOV2(weapon.getAnkamaId(), "equipment", weapon.getName(), weapon.getImageUrls());
         }
 
         if (itemObject == null) {

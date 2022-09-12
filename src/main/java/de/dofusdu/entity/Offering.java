@@ -81,4 +81,11 @@ public class Offering {
     public Item getItem() {
         return item;
     }
+
+    public boolean isSameByContent(Offering other, String language) {
+        return this.bonus.getName(language).equals(other.bonus.getName(language)) &&
+        this.bonus.getType().getName(language).equals(other.bonus.getName(language)) &&
+        this.itemQuantity.equals(other.itemQuantity) &&
+        this.item.getUrl().equals(other.item.getUrl());
+    }
 }

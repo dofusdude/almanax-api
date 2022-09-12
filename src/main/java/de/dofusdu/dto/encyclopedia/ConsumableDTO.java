@@ -16,9 +16,7 @@
 
 package de.dofusdu.dto.encyclopedia;
 
-import java.net.URI;
 import java.util.Collection;
-import java.util.stream.Collectors;
 
 public class ConsumableDTO extends EncItemDTO {
 

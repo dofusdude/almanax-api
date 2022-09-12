@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ * Copyright 2022 Christopher Sieh (stelzo@steado.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,11 +16,24 @@
 
 package de.dofusdu.dto;
 
+import de.dofusdu.entity.Bonus;
+
 import javax.json.bind.annotation.JsonbProperty;
 
-public class BonusDTO {
+public class BonusDTOV2 {
+    @JsonbProperty("type")
+    public BonusTypeDTOV2 type;
+
     @JsonbProperty("description")
-    public String name;
-    @JsonbProperty("bonus")
-    public String type;
+    public String description;
+
+    public BonusDTOV2() {
+    }
+
+    public static BonusDTOV2 from(Bonus bonus, String language) {
+        BonusDTOV2 bonusDTOV2 = new BonusDTOV2();
+        bonusDTOV2.type = BonusTypeDTOV2.from(bonus, language);
+        bonusDTOV2.description = bonus.getName(language);
+        return bonusDTOV2;
+    }
 }

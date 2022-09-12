@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ * Copyright 2022 Christopher Sieh (stelzo@steado.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -58,7 +58,7 @@ public class OfferingDTO {
         offeringDTO.item_url = offeringDTO.encMapped ? offering.getItem().getUrl().replace("/en/", "/" + language + "/") : null;
         if (offeringDTO.encMapped) {
             offeringDTO.itemObject = itemObject;
-            offeringDTO.itemName = null;
+            offeringDTO.itemName = itemObject.name;
         } else {
             offeringDTO.itemObject = null;
         }

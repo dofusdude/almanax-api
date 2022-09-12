@@ -40,4 +40,13 @@ public class DateConverter {
         formatter = formatter.withLocale(Locale.ENGLISH);
         return LocalDate.parse(s, formatter);
     }
+
+    public static LocalDate[] range(LocalDate start, LocalDate end) {
+        long numOfDaysBetween = java.time.temporal.ChronoUnit.DAYS.between(start, end);
+        LocalDate[] range = new LocalDate[(int) numOfDaysBetween + 1];
+        for (int i = 0; i < range.length; i++) {
+            range[i] = start.plusDays(i);
+        }
+        return range;
+    }
 }

@@ -17,6 +17,7 @@
 package de.dofusdu.gateway;
 
 import de.dofusdu.dto.BonusTypeMapDTO;
+import de.dofusdu.dto.BonusTypeMapDTOV2;
 import de.dofusdu.entity.BonusType;
 import de.dofusdu.exceptions.LanguageNotFoundException;
 import de.dofusdu.util.LanguageHelper;
@@ -24,7 +25,7 @@ import me.xdrop.fuzzywuzzy.FuzzySearch;
 import me.xdrop.fuzzywuzzy.model.ExtractedResult;
 import org.hibernate.jpa.QueryHints;
 
-import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.LockModeType;
@@ -32,10 +33,13 @@ import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.transaction.Transactional;
 import javax.ws.rs.NotFoundException;
-import java.util.*;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
-@RequestScoped
+@ApplicationScoped
 public class BonusTypeRepository {
 
     private EntityManager em;
@@ -105,6 +109,22 @@ public class BonusTypeRepository {
         }
 
         return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTO(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-'))).collect(Collectors.toList());
+    }
+
+    @Transactional
+    public Collection<BonusTypeMapDTOV2> bonusTypesDtoV2(String lang) {
+        LanguageHelper.Language language = LanguageHelper.getLanguage(lang);
+        TypedQuery<BonusType> query = this.em.createQuery("SELECT DISTINCT b FROM BonusType b", BonusType.class);
+        query.setLockMode(LockModeType.PESSIMISTIC_READ);
+        query.setHint(QueryHints.HINT_PASS_DISTINCT_THROUGH, false);
+        List<BonusType> bonusTypes;
+        try {
+            bonusTypes = query.getResultList();
+        } catch (NoResultException e) {
+            return List.of();
+        }
+
+        return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTOV2(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-'))).collect(Collectors.toList());
     }
 
     @Transactional

@@ -1,6 +1,5 @@
 package de.dofusdu.memory;
 
-import de.dofusdu.dto.BonusTypeDTOV2;
 import de.dofusdu.dto.BonusTypeMapDTOV2;
 import de.dofusdu.dto.OfferingDTOV2;
 import de.dofusdu.gateway.BonusTypeRepository;
@@ -18,7 +17,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequestScoped
-public class Repository {
+public class MemoryRepository {
 
     @ConfigProperty(name = "redis.host")
     String redisHost;
@@ -31,31 +30,36 @@ public class Repository {
     private BonusTypeRepository bonusTypeRepository;
 
     @Inject
-    public Repository(OfferingRepository offeringRepository,
-                      BonusTypeRepository bonusTypeRepository) {
+    public MemoryRepository(OfferingRepository offeringRepository,
+                            BonusTypeRepository bonusTypeRepository) {
         this.offeringRepository = offeringRepository;
         this.bonusTypeRepository = bonusTypeRepository;
     }
 
-    public Collection<BonusTypeMapDTOV2> getBonuses(String language, Jedis jedis) {
+    public Jedis redis() {
+        Jedis jedis = new Jedis(redisHost, 6379);
+        jedis.auth(redisPassword);
+        return jedis;
+    }
+
+    public Collection<BonusTypeMapDTOV2> getBonuses(String language, Jedis jedis, Jsonb jsonb) {
         String bonusKey = "alm/bonus/" + language;
 
         Collection<String> members = jedis.smembers(bonusKey);
         if (members == null || members.isEmpty()) {
             return bonusTypeRepository.bonusTypesDtoV2(language);
         }
-        
-        return members.stream().map(bonus -> JsonbBuilder.create().fromJson(bonus, BonusTypeMapDTOV2.class)).collect(Collectors.toList());
+
+        return members.stream().map(bonus -> jsonb.fromJson(bonus, BonusTypeMapDTOV2.class)).collect(Collectors.toList());
     }
 
-    public Optional<OfferingDTOV2> getSingleDate(LocalDate date, String language, Jedis jedis) {
+    public Optional<OfferingDTOV2> getSingleDate(LocalDate date, String language, Jedis jedis, Jsonb jsonb) {
         String key = "alm/" + language + "/" + date;
         String offering = jedis.get(key);
         if (offering == null) {
             return offeringRepository.singleDTOV2FromDate(date, language);
         }
 
-        Jsonb jsonb = JsonbBuilder.create();
         OfferingDTOV2 cachedOffering = jsonb.fromJson(offering, OfferingDTOV2.class);
         return Optional.of(cachedOffering);
     }

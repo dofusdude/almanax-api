@@ -18,8 +18,8 @@ package de.dofusdu.boundary.responses.errors;
 
 import javax.ws.rs.core.Response;
 
-public class NoOfferingWithBonusError extends Error {
-    public NoOfferingWithBonusError() {
-        super(Response.Status.NOT_FOUND.getStatusCode(), "No next offering with that Bonus.", null);
+public class RangeTooBigError extends Error {
+    public RangeTooBigError() {
+        super(Response.Status.BAD_REQUEST.getStatusCode(), "Range too big.", null);
     }
 }

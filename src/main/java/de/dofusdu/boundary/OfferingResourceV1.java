@@ -18,16 +18,13 @@ package de.dofusdu.boundary;
 
 import de.dofusdu.boundary.responses.*;
 import de.dofusdu.boundary.responses.errors.ErrorProducer;
-import de.dofusdu.dto.CreateOfferingDTO;
 import de.dofusdu.dto.ItemPositionDTO;
 import de.dofusdu.dto.OfferingDTO;
 import de.dofusdu.exceptions.BonusTypeNotFoundException;
-import de.dofusdu.exceptions.FirstDayNotEnglishException;
 import de.dofusdu.gateway.BonusTypeRepository;
 import de.dofusdu.gateway.OfferingRepository;
 import de.dofusdu.util.DateConverter;
 import de.dofusdu.util.LanguageHelper;
-import io.quarkus.cache.CacheResult;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Retry;
@@ -60,7 +57,7 @@ import java.util.*;
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
 @Path("/dofus")
-public class OfferingResource {
+public class OfferingResourceV1 {
 
     private OfferingRepository offeringRepository;
     private BonusTypeRepository bonusTypeRepository;
@@ -69,16 +66,13 @@ public class OfferingResource {
     private final Integer maxAhead = 35;
     private final ErrorProducer errorProducer;
 
-    @ConfigProperty(name = "admin.api.secret")
-    String apiKey;
-
     @ConfigProperty(name = "timezone")
     String configTimezone;
 
     @Inject
-    public OfferingResource(OfferingRepository offeringRepository,
-                            ErrorProducer errorProducer,
-                            BonusTypeRepository bonusTypeRepository) {
+    public OfferingResourceV1(OfferingRepository offeringRepository,
+                              ErrorProducer errorProducer,
+                              BonusTypeRepository bonusTypeRepository) {
         this.offeringRepository = offeringRepository;
         this.errorProducer = errorProducer;
         this.bonusTypeRepository = bonusTypeRepository;
@@ -852,165 +846,4 @@ public class OfferingResource {
         return Response.ok(res).build();
     }
 
-
-    /** ######################## ADMINISTRATIVE ######################## **/
-    @Tag(name = "Z_Administrative", description = "Managing creations and updates, only for API Maintainer.")
-    @APIResponses({
-            @APIResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @APIResponse(
-                    responseCode = "401",
-                    description = "Unauthorized",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.UnautherizedResponse.class)
-                            )
-                    }
-            ),
-            @APIResponse(
-                    responseCode = "406",
-                    description = "Not Acceptable",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.EnglishDayFirstResponse.class)
-                            )
-                    }
-            )
-    })
-    @POST
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    @Counted(name = "createCount", description = "Hits on creation endpoint (only english).")
-    @Retry
-    @CircuitBreaker
-    @Timed(name = "createTiming")
-    public Response create(@HeaderParam("Authorization") String apiKey, CreateOfferingDTO offeringDTO) {
-        ApiResponse res = new ApiResponse(version, offeringDTO.language);
-        errorProducer.setBase(res);
-
-        if (apiKey == null || !apiKey.equals("Bearer " + this.apiKey)) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(errorProducer.unautherized())
-                    .build();
-        }
-
-        try {
-            offeringRepository.persist(offeringDTO, offeringDTO.language, false);
-        } catch (FirstDayNotEnglishException e) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity(errorProducer.englishDayFirst())
-                    .build();
-        }
-
-        return Response.status(Response.Status.CREATED).build();
-    }
-
-    @Tag(name = "Z_Administrative")
-    @APIResponses({
-            @APIResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @APIResponse(
-                    responseCode = "401",
-                    description = "Unauthorized",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.UnautherizedResponse.class)
-                            )
-                    }
-            ),
-            @APIResponse(
-                    responseCode = "406",
-                    description = "Not Acceptable",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.NoEntryForDateResponse.class)
-                            )
-                    }
-            )
-    })
-    @PUT
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    @Path("translate")
-    public Response updateTranslations(@HeaderParam("Authorization") String apiKey,
-                                          CreateOfferingDTO offeringDTO) {
-        // Prepare responses.
-        ApiResponse response = new ApiResponse(version, offeringDTO.language);
-        errorProducer.setBase(response);
-
-        if (apiKey == null || !apiKey.equals("Bearer " + this.apiKey)) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(errorProducer.unautherized())
-                    .build();
-        }
-
-        try {
-            offeringRepository.updateTranslation(offeringDTO);
-        } catch (FirstDayNotEnglishException e) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity(errorProducer.noEntryForDate())
-                    .build();
-        }
-
-        return Response.ok().build();
-    }
-
-    @Tag(name = "Z_Administrative")
-    @APIResponses({
-            @APIResponse(
-                    responseCode = "200",
-                    description = "OK"
-            ),
-            @APIResponse(
-                    responseCode = "401",
-                    description = "Unauthorized",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.UnautherizedResponse.class)
-                            )
-                    }
-            ),
-            @APIResponse(
-                    responseCode = "406",
-                    description = "Not Acceptable",
-                    content = {
-                            @Content(
-                                    mediaType = MediaType.APPLICATION_JSON,
-                                    schema = @Schema(oneOf = de.dofusdu.boundary.responses.errors.NoEntryForDateResponse.class)
-                            )
-                    }
-            )
-    })
-    @PUT
-    @Transactional(Transactional.TxType.REQUIRES_NEW)
-    public Response update(@HeaderParam("Authorization") String apiKey,
-                           CreateOfferingDTO offeringDTO) {
-        // Prepare responses.
-        ApiResponse response = new ApiResponse(version, offeringDTO.language);
-        errorProducer.setBase(response);
-
-        if (apiKey == null || !apiKey.equals("Bearer " + this.apiKey)) {
-            return Response.status(Response.Status.UNAUTHORIZED)
-                    .entity(errorProducer.unautherized())
-                    .build();
-        }
-
-        boolean res;
-        try {
-            res = offeringRepository.update(offeringDTO);
-        } catch (FirstDayNotEnglishException e) {
-            return Response.status(Response.Status.NOT_ACCEPTABLE)
-                    .entity(errorProducer.noEntryForDate())
-                    .build();
-        }
-
-        return res ? Response.status(Response.Status.CREATED).build() : Response.ok().build();
-    }
 }

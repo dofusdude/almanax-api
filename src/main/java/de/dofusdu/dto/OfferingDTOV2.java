@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ * Copyright 2022 Christopher Sieh (stelzo@steado.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,51 +22,40 @@ import de.dofusdu.util.DateConverter;
 import javax.json.bind.annotation.JsonbProperty;
 import java.time.LocalDate;
 
-public class OfferingDTO {
+public class OfferingDTOV2 {
     public String date;
 
-    @JsonbProperty("item_quantity")
-    public Integer itemQuantity;
+    public BonusDTOV2 bonus;
 
-    public BonusDTO bonus;
+    @JsonbProperty("tribute")
+    public TributeDTOV2 tribute;
 
-    @JsonbProperty("item_name")
-    public String itemName;
+    @JsonbProperty("is_regular")
+    public Boolean isRegular;
 
-    @JsonbProperty("item")
-    public ItemObjectDTO itemObject;
+    public OfferingDTOV2() {
+    }
 
-    @JsonbProperty("item_url")
-    public String item_url;
-
-    @JsonbProperty("enc_mapped")
-    public boolean encMapped;
-
-    public static OfferingDTO from(Offering offering, String language, ItemObjectDTO itemObject) {
+    public static OfferingDTOV2 from(Offering offering, String language, ItemDTOV2 itemObject) {
         if (offering == null) {
             return null;
         }
-        OfferingDTO offeringDTO = new OfferingDTO();
-        BonusDTO bonus = new BonusDTO();
-        bonus.name = offering.getBonus().getName(language);
-        bonus.type = offering.getBonus().getType().getName(language);
-        offeringDTO.bonus = bonus;
+        OfferingDTOV2 offeringDTO = new OfferingDTOV2();
         offeringDTO.date = DateConverter.toLocalDate(offering.getDate()).toString();
-        offeringDTO.itemQuantity = offering.getItemQuantity();
-        offeringDTO.itemName = offering.getItem().getName(language);
-        offeringDTO.encMapped = itemObject != null;
-        offeringDTO.item_url = offeringDTO.encMapped ? offering.getItem().getUrl().replace("/en/", "/" + language + "/") : null;
-        if (offeringDTO.encMapped) {
-            offeringDTO.itemObject = itemObject;
-            offeringDTO.itemName = null;
-        } else {
-            offeringDTO.itemObject = null;
-        }
-
+        offeringDTO.bonus = BonusDTOV2.from(offering.getBonus(), language);
+        offeringDTO.tribute = TributeDTOV2.from(offering, itemObject);
+        offeringDTO.isRegular = false; // set from outside
         return offeringDTO;
     }
 
     public LocalDate getDate() {
         return DateConverter.fromString(date);
+    }
+
+    public boolean isSameByContent(OfferingDTOV2 other) {
+        return this.bonus.description.equals(other.bonus.description) &&
+                this.bonus.type.id.equals(other.bonus.type.id) &&
+                this.tribute.quantity == other.tribute.quantity &&
+                this.tribute.item.ankamaId.equals(other.tribute.item.ankamaId);
     }
 }

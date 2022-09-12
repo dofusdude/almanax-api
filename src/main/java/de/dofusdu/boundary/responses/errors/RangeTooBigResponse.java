@@ -18,11 +18,11 @@ package de.dofusdu.boundary.responses.errors;
 
 import de.dofusdu.boundary.responses.ApiResponse;
 
-public class NoOfferingWithBonusResponse {
-    public NoOfferingWithBonusError error;
+public class RangeTooBigResponse {
+    public RangeTooBigError error;
 
-    public NoOfferingWithBonusResponse(ApiResponse o) {
+    public RangeTooBigResponse(ApiResponse o) {
         super();
-        this.error = new NoOfferingWithBonusError();
+        this.error = new RangeTooBigError();
     }
 }

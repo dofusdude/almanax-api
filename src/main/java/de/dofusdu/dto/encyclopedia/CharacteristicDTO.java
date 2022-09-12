@@ -16,9 +16,6 @@
 
 package de.dofusdu.dto.encyclopedia;
 
-import javax.ws.rs.NotFoundException;
-import java.util.Optional;
-
 public class CharacteristicDTO {
     public String name;
     public String value;

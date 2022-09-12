@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 Christopher Sieh (stelzo@steado.de)
+ * Copyright 2022 Christopher Sieh (stelzo@steado.de)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,17 +16,15 @@
 
 package de.dofusdu.dto;
 
-import javax.json.bind.annotation.JsonbProperty;
-
-public class BonusTypeMapDTO {
-    public String type = "bonus";
+public class BonusTypeMapDTOV2 {
+    public String id;
     public String name;
 
-    @JsonbProperty("url_code")
-    public String urlCode;
+    public BonusTypeMapDTOV2() {
+    }
 
-    public BonusTypeMapDTO(String name, String urlCode) {
+    public BonusTypeMapDTOV2(String name, String id) {
         this.name = name;
-        this.urlCode = urlCode;
+        this.id = id;
     }
 }

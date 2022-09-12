@@ -74,6 +74,10 @@ public class ErrorProducer {
         return new DateFormatResponse(base);
     }
 
+    public RangeTooBigResponse rangeTooBig() {
+        return new RangeTooBigResponse(base);
+    }
+
     public TimezoneResponse timezone() {
         return new TimezoneResponse(base);
     }
