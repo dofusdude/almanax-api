@@ -51,7 +51,7 @@ public class Populate {
         this.offeringRepository = offeringRepository;
         this.bonusTypeRepository = bonusTypeRepository;
     }
-
+/*
     void onStart(@Observes StartupEvent ev) {
         Thread t1 = new Thread(new Runnable() {
             @Override
@@ -114,5 +114,6 @@ public class Populate {
     void populateRedis(ScheduledExecution execution) {
         populateRedis();
     }
+ */
 
 }

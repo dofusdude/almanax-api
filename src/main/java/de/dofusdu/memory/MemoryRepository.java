@@ -42,6 +42,10 @@ public class MemoryRepository {
         return jedis;
     }
 
+    public Collection<BonusTypeMapDTOV2> getBonuses(String language) {
+            return bonusTypeRepository.bonusTypesDtoV2(language);
+    }
+
     public Collection<BonusTypeMapDTOV2> getBonuses(String language, Jedis jedis, Jsonb jsonb) {
         String bonusKey = "alm/bonus/" + language;
 
@@ -51,6 +55,10 @@ public class MemoryRepository {
         }
 
         return members.stream().map(bonus -> jsonb.fromJson(bonus, BonusTypeMapDTOV2.class)).collect(Collectors.toList());
+    }
+
+    public Optional<OfferingDTOV2> getSingleDate(LocalDate date, String language) {
+        return offeringRepository.singleDTOV2FromDate(date, language);
     }
 
     public Optional<OfferingDTOV2> getSingleDate(LocalDate date, String language, Jedis jedis, Jsonb jsonb) {

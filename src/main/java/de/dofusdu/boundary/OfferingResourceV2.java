@@ -31,7 +31,6 @@ import org.eclipse.microprofile.faulttolerance.CircuitBreaker;
 import org.eclipse.microprofile.faulttolerance.Retry;
 import org.eclipse.microprofile.metrics.annotation.Counted;
 import org.eclipse.microprofile.metrics.annotation.Timed;
-import redis.clients.jedis.Jedis;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
@@ -102,9 +101,7 @@ public class OfferingResourceV2 {
                     .build();
         }
 
-        try (Jedis redis = memoryRepository.redis()) {
-            return Response.ok(memoryRepository.getBonuses(language, redis, jsonb)).build();
-        }
+        return Response.ok(memoryRepository.getBonuses(language)).build();
     }
 
 
@@ -135,17 +132,16 @@ public class OfferingResourceV2 {
         }
 
 
-        try (Jedis redis = memoryRepository.redis()) {
-            Optional<OfferingDTOV2> offeringDTO = memoryRepository.getSingleDate(date, language, redis, jsonb);
-            if (offeringDTO.isEmpty()) {
-                return Response.status(Response.Status.NOT_FOUND)
-                        .build();
-            }
-
-            return Response
-                    .ok(offeringDTO.get())
+        Optional<OfferingDTOV2> offeringDTO = memoryRepository.getSingleDate(date, language);
+        if (offeringDTO.isEmpty()) {
+            return Response.status(Response.Status.NOT_FOUND)
                     .build();
         }
+
+        return Response
+                .ok(offeringDTO.get())
+                .build();
+
     }
 
 
@@ -268,31 +264,30 @@ public class OfferingResourceV2 {
                     .build();
         }
 
-        try (Jedis redis = memoryRepository.redis()) {
-            Collection<OfferingDTOV2> offerings = new ArrayList<>();
-            for (LocalDate date = fromDate; date.isBefore(toDate); date = date.plusDays(1)) {
-                Optional<OfferingDTOV2> offeringDTO = memoryRepository.getSingleDate(date, language, redis, jsonb);
-                if (offeringDTO.isPresent()) {
-                    offerings.add(offeringDTO.get());
-                }
+        Collection<OfferingDTOV2> offerings = new ArrayList<>();
+        for (LocalDate date = fromDate; date.isBefore(toDate); date = date.plusDays(1)) {
+            Optional<OfferingDTOV2> offeringDTO = memoryRepository.getSingleDate(date, language);
+            if (offeringDTO.isPresent()) {
+                offerings.add(offeringDTO.get());
             }
-
-            if (bonusType != null && !bonusType.isEmpty()) {
-                Optional<BonusTypeMapDTOV2> bonusTypeOptional = memoryRepository.getBonuses(language, redis, jsonb).stream()
-                        .filter(bonusType1 -> bonusType1.id.equals(bonusType))
-                        .findFirst();
-
-                if (bonusTypeOptional.isEmpty()) {
-                    return Response.status(Response.Status.NOT_FOUND)
-                            .build();
-                }
-
-                offerings = offerings.stream()
-                        .filter(offeringDTO -> offeringDTO.bonus.type.id.equals(bonusType))
-                        .collect(Collectors.toList());
-            }
-            return Response.ok(offerings).build();
         }
+
+        if (bonusType != null && !bonusType.isEmpty()) {
+            Optional<BonusTypeMapDTOV2> bonusTypeOptional = memoryRepository.getBonuses(language).stream()
+                    .filter(bonusType1 -> bonusType1.id.equals(bonusType))
+                    .findFirst();
+
+            if (bonusTypeOptional.isEmpty()) {
+                return Response.status(Response.Status.NOT_FOUND)
+                        .build();
+            }
+
+            offerings = offerings.stream()
+                    .filter(offeringDTO -> offeringDTO.bonus.type.id.equals(bonusType))
+                    .collect(Collectors.toList());
+        }
+        return Response.ok(offerings).build();
+
     }
 
     @POST
