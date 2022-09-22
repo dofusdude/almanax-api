@@ -108,7 +108,7 @@ public class BonusTypeRepository {
             return List.of();
         }
 
-        return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTO(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-'))).collect(Collectors.toList());
+        return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTO(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-').replace(",", "").strip())).collect(Collectors.toList());
     }
 
     @Transactional
@@ -124,7 +124,7 @@ public class BonusTypeRepository {
             return List.of();
         }
 
-        return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTOV2(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-'))).collect(Collectors.toList());
+        return bonusTypes.stream().map(bonusType -> new BonusTypeMapDTOV2(bonusType.getName(lang), bonusType.getName("en").toLowerCase().replace(' ', '-').replace(",", "").strip())).collect(Collectors.toList());
     }
 
     @Transactional

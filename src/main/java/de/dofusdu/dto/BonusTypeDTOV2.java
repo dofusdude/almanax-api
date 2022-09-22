@@ -32,7 +32,7 @@ public class BonusTypeDTOV2 {
 
     public static BonusTypeDTOV2 from(Bonus bonus, String language) {
         BonusTypeDTOV2 bonusTypeDTOV2 = new BonusTypeDTOV2();
-        bonusTypeDTOV2.id = bonus.getType().getName("en").toLowerCase().replace(' ', '-');
+        bonusTypeDTOV2.id = bonus.getType().getName("en").toLowerCase().replace(' ', '-').replace(",", "").strip();
         bonusTypeDTOV2.name = bonus.getType().getName(language);
         return bonusTypeDTOV2;
     }
