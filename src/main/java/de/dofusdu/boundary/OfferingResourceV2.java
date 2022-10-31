@@ -111,8 +111,6 @@ public class OfferingResourceV2 {
     @GET
     @Path("{language}/almanax/{date}")
     @Counted(name = "singleDayV2Count", description = "Single Day hits (date).")
-    @Retry
-    @CircuitBreaker
     @Timed(name = "singleDayV2Timing")
     public Response singleDayV2(@PathParam("language") String language,
                                 @PathParam("date") String stringDate) {
@@ -161,8 +159,6 @@ public class OfferingResourceV2 {
     @Path("{language}/almanax")
     @Transactional
     @Counted(name = "daysRangeCount", description = "Days range hits.")
-    @Retry
-    @CircuitBreaker
     @Timed(name = "daysRangeTiming")
     public Response daysRange(@PathParam("language") String language,
                               @QueryParam("timezone") String timezone,
