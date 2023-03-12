@@ -192,14 +192,20 @@ public class OfferingRepository {
     @Transactional
     public void persist(CreateOfferingDTO offeringDTO, String language, boolean recreate) {
         List<ItemsListEntryTyped> res;
-        String resUrl = "";
+        String resUrl;
         try {
             res = allItemsApi.getItemsAllSearch(offeringDTO.language, offeringDTO.item, null, null, null);
             if (res.isEmpty()) {
                 throw new NotFoundException();
             }
 
-            ItemsListEntryTyped item = res.get(0);
+            int i = 0;
+            ItemsListEntryTyped firstItem = res.get(0);
+            while(i < res.size() && res.get(i).getItemSubtype().equals("quest") && res.get(i).getName().equals(firstItem.getName())) {
+                i++;
+            }
+
+            ItemsListEntryTyped item = res.get(i);
             resUrl = "https://api.dofusdu.de/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype() + "/" + item.getAnkamaId().toString();
             offeringDTO.itemPicture = item.getImageUrls().getSd() == null ? item.getImageUrls().getIcon() : item.getImageUrls().getSd(); // override the ankama linked picture
             
