@@ -20,7 +20,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
 
       - name: Run tests
         run: |
@@ -42,7 +42,7 @@ jobs:
       packages: write
 
     steps:
-      - uses: actions/checkout@v4.1.0
+      - uses: actions/checkout@v4.1.1
 
       - name: Build image with jar
         run: ./mvnw clean package -DskipTests -Dquarkus.package.type=fast-jar && docker build -f src/main/docker/Dockerfile.fast-jar -t runner/$IMAGE_NAME:1.0-SNAPSHOT .
