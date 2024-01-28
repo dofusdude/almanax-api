@@ -21,6 +21,6 @@ import java.time.LocalDate;
 
 public class DateNotFoundError extends Error {
     public DateNotFoundError(String firstDate) {
-        super(Response.Status.NOT_FOUND.getStatusCode(), "Date not available.", "Starting at " + firstDate + ", currently ending " + LocalDate.now().plusDays(35).toString() + ".");
+        super(Response.Status.NOT_FOUND.getStatusCode(), "Date not available.", "Starting at " + firstDate + ", currently ending " + LocalDate.now().plusDays(370).toString() + ".");
     }
 }

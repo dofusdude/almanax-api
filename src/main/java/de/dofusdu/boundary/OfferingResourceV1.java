@@ -63,7 +63,7 @@ public class OfferingResourceV1 {
     private BonusTypeRepository bonusTypeRepository;
 
     private final Integer version = 1;
-    private final Integer maxAhead = 35;
+    private final Integer maxAhead = 370;
     private final ErrorProducer errorProducer;
 
     @ConfigProperty(name = "timezone")
