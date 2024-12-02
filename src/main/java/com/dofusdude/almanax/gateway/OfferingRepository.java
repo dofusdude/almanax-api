@@ -141,6 +141,10 @@ public class OfferingRepository {
             return true;
         }
 
+        if (!newOffering.itemPicture.equals(persistentOffering.getItem().getPictureUrl())) {
+            return true;
+        }
+
         return false;
     }
 
@@ -179,7 +183,8 @@ public class OfferingRepository {
         GameApi apiInstance = new GameApi(defaultClient);
 
         try {
-            List<ItemsListEntryTyped> items = apiInstance.getItemsAllSearch(language, "dofus2",
+            // TODO disallow quest item subtypes using "-quest" filter
+            List<ItemsListEntryTyped> items = apiInstance.getItemsAllSearch(language, "dofus3",
                     offeringDTO.item,
                     null, null, null, null);
 
@@ -191,7 +196,7 @@ public class OfferingRepository {
             }
 
             ItemsListEntryTyped item = items.get(i);
-            resUrl = defaultClient.getBasePath() + "/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype()
+            resUrl = defaultClient.getBasePath() + "/dofus3/v1/" + offeringDTO.language + "/items/" + item.getItemSubtype()
                     + "/"
                     + Integer.toString(item.getAnkamaId());
             offeringDTO.itemPicture = item.getImageUrls().getSd() == null ? item.getImageUrls().getIcon()

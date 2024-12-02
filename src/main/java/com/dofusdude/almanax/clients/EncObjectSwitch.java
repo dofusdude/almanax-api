@@ -38,7 +38,7 @@ public class EncObjectSwitch {
         Integer ankamaId = Integer.parseInt(split[split.length - 1].trim());
         String ankamaEnGeneral = "https://www.dofus.com/en/mmorpg/encyclopedia";
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        String game = "dofus2";
+        String game = "dofus3";
 
         if (url.contains("resources")) {
             ResourcesApi resourcesApi = new ResourcesApi(defaultClient);
@@ -103,7 +103,7 @@ public class EncObjectSwitch {
         String[] split = url.split("/");
         Integer ankamaId = Integer.parseInt(split[split.length - 1].trim());
         ApiClient defaultClient = Configuration.getDefaultApiClient();
-        String game = "dofus2";
+        String game = "dofus3";
 
         if (url.contains("resources")) {
             try {
