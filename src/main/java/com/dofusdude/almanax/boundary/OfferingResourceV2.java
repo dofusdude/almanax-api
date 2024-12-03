@@ -48,7 +48,7 @@ import java.util.stream.Collectors;
 @RequestScoped
 @Produces(MediaType.APPLICATION_JSON)
 @Consumes(MediaType.APPLICATION_JSON)
-@Path("/dofus3")
+@Path("/dofus2")
 public class OfferingResourceV2 {
 
     private OfferingRepository offeringRepository;
