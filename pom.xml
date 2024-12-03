@@ -6,7 +6,7 @@
   <artifactId>almanax</artifactId>
   <version>1.0-SNAPSHOT</version>
   <properties>
-    <dofusdude.version>0.8.3</dofusdude.version>
+    <dofusdude.version>1.0.0-rc.8</dofusdude.version>
     <compiler-plugin.version>3.13.0</compiler-plugin.version>
     <maven.compiler.parameters>true</maven.compiler.parameters>
     <maven.compiler.source>17</maven.compiler.source>

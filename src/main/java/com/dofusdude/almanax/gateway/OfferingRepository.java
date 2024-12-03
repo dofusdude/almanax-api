@@ -18,7 +18,7 @@ package com.dofusdude.almanax.gateway;
 
 import com.dofusdude.client.ApiClient;
 import com.dofusdude.client.Configuration;
-import com.dofusdude.client.model.ItemsListEntryTyped;
+import com.dofusdude.client.model.ListItemGeneral;
 import com.dofusdude.client.api.GameApi;
 import com.dofusdude.almanax.clients.EncObjectSwitch;
 import com.dofusdude.almanax.dto.CreateOfferingDTO;
@@ -141,6 +141,10 @@ public class OfferingRepository {
             return true;
         }
 
+        if (!newOffering.itemPicture.equals(persistentOffering.getItem().getPictureUrl())) {
+            return true;
+        }
+
         return false;
     }
 
@@ -179,19 +183,19 @@ public class OfferingRepository {
         GameApi apiInstance = new GameApi(defaultClient);
 
         try {
-            List<ItemsListEntryTyped> items = apiInstance.getItemsAllSearch(language, "dofus2",
+            List<ListItemGeneral> items = apiInstance.getItemsAllSearch(language, "dofus3",
                     offeringDTO.item,
                     null, null, null, null);
 
             int i = 0;
-            ItemsListEntryTyped firstItem = items.get(0);
-            while (i < items.size() && items.get(i).getItemSubtype().equals("quest")
+            ListItemGeneral firstItem = items.get(0);
+            while (i < items.size() && items.get(i).getItemSubtype().getNameId().equals("quest")
                     && items.get(i).getName().equals(firstItem.getName())) {
                 i++;
             }
 
-            ItemsListEntryTyped item = items.get(i);
-            resUrl = defaultClient.getBasePath() + "/dofus2/" + offeringDTO.language + "/items/" + item.getItemSubtype()
+            ListItemGeneral item = items.get(i);
+            resUrl = defaultClient.getBasePath() + "/dofus3/v1/" + offeringDTO.language + "/items/" + item.getItemSubtype()
                     + "/"
                     + Integer.toString(item.getAnkamaId());
             offeringDTO.itemPicture = item.getImageUrls().getSd() == null ? item.getImageUrls().getIcon()

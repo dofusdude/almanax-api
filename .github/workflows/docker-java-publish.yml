@@ -2,11 +2,6 @@ name: Docker
 
 on:
   push:
-    # Publish `main` as Docker `latest` image.
-    branches:
-      - main
-
-    # Publish `v1.2.3` tags as releases.
     tags:
       - v*
 
@@ -49,6 +44,10 @@ jobs:
           java-version: "17"
           distribution: "temurin"
 
+      - name: Extract version from Git tag
+        id: vars
+        run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
       - name: Build image with jar
         env:
           GITHUB_USERNAME: ${{ secrets.G_USERNAME }}
@@ -61,5 +60,5 @@ jobs:
       - name: Push image
         run: |
           IMAGE_READY=stelzo/$IMAGE_NAME
-          docker tag runner/$IMAGE_NAME:1.0-SNAPSHOT $IMAGE_READY:java
-          docker push $IMAGE_READY:java
+          docker tag runner/$IMAGE_NAME:1.0-SNAPSHOT $IMAGE_READY:java-${{ env.VERSION }}
+          docker push $IMAGE_READY:java-${{ env.VERSION }}
