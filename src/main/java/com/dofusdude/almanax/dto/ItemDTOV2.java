@@ -16,7 +16,7 @@
 
 package com.dofusdude.almanax.dto;
 
-import com.dofusdude.client.model.ImageUrls;
+import com.dofusdude.client.model.Images;
 
 import jakarta.json.bind.annotation.JsonbProperty;
 
@@ -34,7 +34,7 @@ public class ItemDTOV2 {
     public ItemDTOV2() {
     }
 
-    public ItemDTOV2(Integer ankamaId, String subtype, String name, ImageUrls image_urls) {
+    public ItemDTOV2(Integer ankamaId, String subtype, String name, Images image_urls) {
         this.ankamaId = ankamaId;
         this.subtype = subtype;
         this.name = name;

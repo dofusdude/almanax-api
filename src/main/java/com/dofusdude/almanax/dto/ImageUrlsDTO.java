@@ -16,7 +16,7 @@
 
 package com.dofusdude.almanax.dto;
 
-import com.dofusdude.client.model.ImageUrls;
+import com.dofusdude.client.model.Images;
 
 public class ImageUrlsDTO {
     /**
@@ -47,7 +47,7 @@ public class ImageUrlsDTO {
     public ImageUrlsDTO() {
     }
 
-    public static ImageUrlsDTO from(ImageUrls imageUrls) {
+    public static ImageUrlsDTO from(Images imageUrls) {
         ImageUrlsDTO imageUrlsDTO = new ImageUrlsDTO();
         imageUrlsDTO.icon = imageUrls.getIcon();
         imageUrlsDTO.sd = imageUrls.getSd();
